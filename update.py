@@ -1,67 +1,81 @@
 from logging import FileHandler, StreamHandler, INFO, basicConfig, error as log_error, info as log_info
-from os import path as ospath, environ, execl as osexecl
+from os import path as ospath, environ, remove
 from subprocess import run as srun
 from requests import get as rget
-from dotenv import load_dotenv
-from sys import executable
+from dotenv import load_dotenv, dotenv_values
+from pymongo import MongoClient
 
 if ospath.exists('log.txt'):
     with open('log.txt', 'r+') as f:
         f.truncate(0)
 
-basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[FileHandler('log.txt'), StreamHandler()],
-                    level=INFO)
+if ospath.exists('rlog.txt'):
+    remove('rlog.txt')
 
-CONFIG_FILE_URL = environ.get('CONFIG_FILE_URL')
-try:
-    if len(CONFIG_FILE_URL) == 0:
-        raise TypeError
-    try:
-        res = rget(CONFIG_FILE_URL)
-        if res.status_code == 200:
-            with open('config.env', 'wb+') as f:
-                f.write(res.content)
-        else:
-            log_error(f"Failed to download config.env {res.status_code}")
-    except Exception as e:
-        log_error(f"CONFIG_FILE_URL: {e}")
-except:
-    pass
+basicConfig(format="[%(asctime)s] [%(levelname)s] - %(message)s",
+            datefmt="%d-%b-%y %I:%M:%S %p",
+            handlers=[FileHandler('log.txt'), StreamHandler()],
+            level=INFO)
 
 load_dotenv('config.env', override=True)
 
-UPSTREAM_REPO = environ.get('UPSTREAM_REPO')
-UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH')
 try:
-    if len(UPSTREAM_REPO) == 0:
-       raise TypeError
+    if bool(environ.get('_____REMOVE_THIS_LINE_____')):
+        log_error('The README.md file there to be read! Exiting now!')
+        exit()
 except:
-    UPSTREAM_REPO = "https://github.com/weebzone/WZML"
-try:
-    if len(UPSTREAM_BRANCH) == 0:
-       raise TypeError
-except:
-    UPSTREAM_BRANCH = 'update'
+    pass
 
-if ospath.exists('.git'):
-    srun(["rm", "-rf", ".git"])
+BOT_TOKEN = environ.get('BOT_TOKEN', '')
+if len(BOT_TOKEN) == 0:
+    log_error("BOT_TOKEN variable is missing! Exiting now")
+    exit(1)
 
-update = srun([f"git init -q \
-                 && git config --global user.email doc.adhikari@gmail.com \
-                 && git config --global user.name Karan \
-                 && git add . \
-                 && git commit -sm update -q \
-                 && git remote add origin {UPSTREAM_REPO} \
-                 && git fetch origin -q \
-                 && git reset --hard origin/{UPSTREAM_BRANCH} -q"], shell=True)
+bot_id = BOT_TOKEN.split(':', 1)[0]
 
-if update.returncode == 0:
-    log_info('Successfully updated with latest commit from UPSTREAM_REPO')
-    log_info(f'Upstream Repo: {UPSTREAM_REPO}')
-    log_info(f'Upstream Branch: {UPSTREAM_BRANCH}')
-else:
-    log_error('Something went wrong while updating, check UPSTREAM_REPO if valid or not!')
-    log_info(f'Entered Upstream Repo: {UPSTREAM_REPO}')
-    log_info(f'Entered Upstream Branch: {UPSTREAM_BRANCH}')
+DATABASE_URL = environ.get('DATABASE_URL', '')
+if len(DATABASE_URL) == 0:
+    DATABASE_URL = None
 
+if DATABASE_URL is not None:
+    conn = MongoClient(DATABASE_URL)
+    db = conn.wzmlx
+    old_config = db.settings.deployConfig.find_one({'_id': bot_id})
+    config_dict = db.settings.config.find_one({'_id': bot_id})
+    if old_config is not None:
+        del old_config['_id']
+    if (old_config is not None and old_config == dict(dotenv_values('config.env')) or old_config is None) \
+            and config_dict is not None:
+        environ['UPSTREAM_REPO'] = config_dict['UPSTREAM_REPO']
+        environ['UPSTREAM_BRANCH'] = config_dict['UPSTREAM_BRANCH']
+    conn.close()
+
+UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
+if len(UPSTREAM_REPO) == 0:
+    UPSTREAM_REPO = None
+
+UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
+if len(UPSTREAM_BRANCH) == 0:
+    UPSTREAM_BRANCH = 'master'
+
+if UPSTREAM_REPO is not None:
+    if ospath.exists('.git'):
+        srun(["rm", "-rf", ".git"])
+
+    update = srun([f"git init -q \
+                     && git config --global user.email doc.adhikari@gmail.com \
+                     && git config --global user.name weebzone \
+                     && git add . \
+                     && git commit -sm update -q \
+                     && git remote add origin {UPSTREAM_REPO} \
+                     && git fetch origin -q \
+                     && git reset --hard origin/{UPSTREAM_BRANCH} -q"], shell=True)
+
+    repo = UPSTREAM_REPO.split('/')
+    UPSTREAM_REPO = f"https://github.com/{repo[-2]}/{repo[-1]}"
+    if update.returncode == 0:
+        log_info('Successfully updated with latest commits !!')
+        log_info(f'UPSTREAM_REPO: {UPSTREAM_REPO} | UPSTREAM_BRANCH: {UPSTREAM_BRANCH}')
+    else:
+        log_error('Something went Wrong !!')
+        log_error(f'UPSTREAM_REPO: {UPSTREAM_REPO} | UPSTREAM_BRANCH: {UPSTREAM_BRANCH}')
