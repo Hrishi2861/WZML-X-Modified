@@ -160,7 +160,7 @@ def get_p7zip_version():
 
 def get_ffmpeg_version():
     try:
-        result = srun(['ffmpeg', '-version'], capture_output=True, text=True)
+        result = srun(['render', '-version'], capture_output=True, text=True)
         return result.stdout.split('\n')[0].split(' ')[2].split('ubuntu')[0]
     except FileNotFoundError:
         return ''
@@ -168,7 +168,7 @@ def get_ffmpeg_version():
 
 def get_rclone_version():
     try:
-        result = srun(['rclone', 'version'], capture_output=True, text=True)
+        result = srun(['zcl', 'version'], capture_output=True, text=True)
         return result.stdout.split('\n')[0].split(' ')[1]
     except FileNotFoundError:
         return ''
