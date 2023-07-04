@@ -230,9 +230,9 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
             return
         elif up not in ['rcl', 'gd', 'ddl']:
             if up.startswith('mrcc:'):
-                config_path = f'rclone/{message.from_user.id}.conf'
+                config_path = f'wcl/{message.from_user.id}.conf'
             else:
-                config_path = 'rclone.conf'
+                config_path = 'wcl.conf'
             if not await aiopath.exists(config_path):
                 await sendMessage(message, f"RClone Config: {config_path} not Exists!")
                 await delete_links(message)
@@ -263,9 +263,9 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     elif is_rclone_path(link):
         if link.startswith('mrcc:'):
             link = link.split('mrcc:', 1)[1]
-            config_path = f'rclone/{message.from_user.id}.conf'
+            config_path = f'wcl/{message.from_user.id}.conf'
         else:
-            config_path = 'rclone.conf'
+            config_path = 'wcl.conf'
         if not await aiopath.exists(config_path):
             await sendMessage(message, f"<b>RClone Config:</b> {config_path} not Exists!")
             await delete_links(message)

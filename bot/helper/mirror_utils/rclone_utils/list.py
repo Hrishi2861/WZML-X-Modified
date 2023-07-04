@@ -72,14 +72,14 @@ async def path_updates(client, query, obj):
         await message.delete()
         obj.event.set()
     elif data[1] == 'def':
-        path = f'{obj.remote}{obj.path}' if obj.config_path == 'rclone.conf' else f'mrcc:{obj.remote}{obj.path}'
+        path = f'{obj.remote}{obj.path}' if obj.config_path == 'wcl.conf' else f'mrcc:{obj.remote}{obj.path}'
         if path != config_dict['RCLONE_PATH']:
             config_dict['RCLONE_PATH'] = path
             await obj.get_path_buttons()
             if config_dict['DATABASE_URL']:
                 await DbManger().update_config({'RCLONE_PATH': path})
     elif data[1] == 'owner':
-        obj.config_path = 'rclone.conf'
+        obj.config_path = 'wcl.conf'
         obj.path = ''
         obj.remote = ''
         await obj.list_remotes()
@@ -107,7 +107,7 @@ class RcloneList:
         self.query_proc = False
         self.item_type = '--dirs-only'
         self.event = Event()
-        self.user_rcc_path = f'rclone/{self.__user_id}.conf'
+        self.user_rcc_path = f'wcl/{self.__user_id}.conf'
         self.config_path = ''
         self.path = ''
         self.list_status = ''
@@ -257,7 +257,7 @@ class RcloneList:
             button = buttons.build_menu(2)
             await self.__send_list_message(msg, button)
         else:
-            self.config_path = 'rclone.conf' if self.__rc_owner else self.user_rcc_path
+            self.config_path = 'wcl.conf' if self.__rc_owner else self.user_rcc_path
             await self.list_remotes()
 
     async def back_from_path(self):
@@ -275,7 +275,7 @@ class RcloneList:
         future = self.__event_handler()
         if config_path is None:
             self.__rc_user = await aiopath.exists(self.user_rcc_path)
-            self.__rc_owner = await aiopath.exists('rclone.conf')
+            self.__rc_owner = await aiopath.exists('wcl.conf')
             if not self.__rc_owner and not self.__rc_user:
                 self.event.set()
                 return 'Rclone Config not Exists!'
@@ -285,6 +285,6 @@ class RcloneList:
             await self.list_remotes()
         await wrap_future(future)
         await self.__reply_to.delete()
-        if self.config_path != 'rclone.conf' and not self.is_cancelled:
+        if self.config_path != 'wcl.conf' and not self.is_cancelled:
             return f'mrcc:{self.remote}{self.path}'
         return f'{self.remote}{self.path}'

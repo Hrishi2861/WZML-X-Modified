@@ -60,7 +60,7 @@ async def get_user_settings(from_user, key=None, edit_type=None, edit_mode=None)
     name = from_user.mention(style="html")
     buttons = ButtonMaker()
     thumbpath = f"Thumbnails/{user_id}.jpg"
-    rclone_path = f'rclone/{user_id}.conf'
+    rclone_path = f'wcl/{user_id}.conf'
     user_dict = user_data.get(user_id, {})
     if key is None:
         buttons.ibutton("Universal Settings", f"userset {user_id} universal")
@@ -315,12 +315,12 @@ async def set_thumb(client, message, pre_event, key, direct=False):
 async def add_rclone(client, message, pre_event):
     user_id = message.from_user.id
     handler_dict[user_id] = False
-    path = f'{getcwd()}/rclone/'
+    path = f'{getcwd()}/wcl/'
     if not await aiopath.isdir(path):
         await mkdir(path)
     des_dir = ospath.join(path, f'{user_id}.conf')
     await message.download(file_name=des_dir)
-    update_user_ldata(user_id, 'rclone', f'rclone/{user_id}.conf')
+    update_user_ldata(user_id, 'rclone', f'wcl/{user_id}.conf')
     await message.delete()
     await update_user_settings(pre_event, 'rcc', 'mirror')
     if DATABASE_URL:
@@ -374,7 +374,7 @@ async def edit_user_settings(client, query):
     message = query.message
     data = query.data.split()
     thumb_path = f'Thumbnails/{user_id}.jpg'
-    rclone_path = f'rclone/{user_id}.conf'
+    rclone_path = f'wcl/{user_id}.conf'
     user_dict = user_data.get(user_id, {})
     if user_id != int(data[1]):
         await query.answer("Not Yours!", show_alert=True)
@@ -567,7 +567,7 @@ async def edit_user_settings(client, query):
         user_id = int(data[3])
         await query.answer()
         thumb_path = f'Thumbnails/{user_id}.jpg'
-        rclone_path = f'rclone/{user_id}.conf'
+        rclone_path = f'wcl/{user_id}.conf'
         if await aiopath.exists(thumb_path):
             await aioremove(thumb_path)
         if await aiopath.exists(rclone_path):

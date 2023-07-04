@@ -42,7 +42,7 @@ class DbManger:
                 uid = row['_id']
                 del row['_id']
                 thumb_path = f'Thumbnails/{uid}.jpg'
-                rclone_path = f'rclone/{uid}.conf'
+                rclone_path = f'wcl/{uid}.conf'
                 if row.get('thumb'):
                     if not await aiopath.exists('Thumbnails'):
                         await makedirs('Thumbnails')
@@ -50,8 +50,8 @@ class DbManger:
                         await f.write(row['thumb'])
                     row['thumb'] = thumb_path
                 if row.get('rclone'):
-                    if not await aiopath.exists('rclone'):
-                        await makedirs('rclone')
+                    if not await aiopath.exists('wcl'):
+                        await makedirs('wcl')
                     async with aiopen(rclone_path, 'wb+') as f:
                         await f.write(row['rclone'])
                     row['rclone'] = rclone_path

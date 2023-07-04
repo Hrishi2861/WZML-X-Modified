@@ -381,9 +381,9 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
             return
         elif up not in ['rcl', 'gd', 'ddl']:
             if up.startswith('mrcc:'):
-                config_path = f'rclone/{message.from_user.id}.conf'
+                config_path = f'wcl/{message.from_user.id}.conf'
             else:
-                config_path = 'rclone.conf'
+                config_path = 'wcl.conf'
             if not await aiopath.exists(config_path):
                 await sendMessage(message, f'Rclone Config: {config_path} not Exists!')
                 await delete_links(message)
