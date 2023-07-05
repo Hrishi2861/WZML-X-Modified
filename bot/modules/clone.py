@@ -34,9 +34,9 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
 
     if link.startswith('mrcc:'):
         link = link.split('mrcc:', 1)[1]
-        config_path = f'wclessage.from_user.id}.conf'
+        config_path = f'wcl/{message.from_user.id}.conf'
     else:
-        config_path = 'wclnf'
+        config_path = 'wcl/.conf'
 
     if not await aiopath.exists(config_path):
         await sendMessage(message, f"<b>RClone Config:</b> {config_path} not Exists!")
@@ -53,10 +53,10 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
         await sendMessage(message, 'Given Wrong RClone Destination!')
         return
     if dst_path.startswith('mrcc:'):
-        if config_path != f'wclessage.from_user.id}.conf':
+        if config_path != f'wcl/{message.from_user.id}.conf':
             await sendMessage(message, 'You should use same wcl.conf to clone between paths!')
             return
-    elif config_path != 'wclnf':
+    elif config_path != 'wcl.conf':
         await sendMessage(message, 'You should use same wcl.conf to clone between paths!')
         return
 
@@ -235,7 +235,7 @@ async def clone(client, message):
         return
 
     if is_rclone_path(link):
-        if not await aiopath.exists('wclnf') and not await aiopath.exists(f'wcl/{message.from_user.id}.conf'):
+        if not await aiopath.exists('wcl.conf') and not await aiopath.exists(f'wcl/{message.from_user.id}.conf'):
             await sendMessage(message, 'RClone Config Not exists!')
             await delete_links(message)
             return
