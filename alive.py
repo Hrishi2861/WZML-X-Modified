@@ -10,8 +10,8 @@ try:
     BASE_URL = BASE_URL.rstrip("/")
 except TypeError:
     BASE_URL = None
-BASE_URL_PORT = environ.get('BASE_URL_PORT', None)
-if BASE_URL_PORT is not None and BASE_URL is not None:
+PORT = environ.get('PORT', None)
+if PORT is not None and BASE_URL is not None:
     while True:
         try:
             rget(BASE_URL).status_code
