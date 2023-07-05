@@ -235,7 +235,7 @@ async def clone(client, message):
         return
 
     if is_rclone_path(link):
-        if not await aiopath.exists('wclnf') and not await aiopath.exists(f'wclwclage.from_user.id}.conf'):
+        if not await aiopath.exists('wclnf') and not await aiopath.exists(f'wcl/{message.from_user.id}.conf'):
             await sendMessage(message, 'RClone Config Not exists!')
             await delete_links(message)
             return
