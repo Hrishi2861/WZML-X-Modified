@@ -3,15 +3,15 @@ from requests import get as rget
 from os import environ
 from logging import error as logerror
 
-BASE_URL = environ.get('BASE_URL_HK', None)
+BASE_URL = environ.get('BASE_URL', None)
 try:
     if len(BASE_URL) == 0:
         raise TypeError
     BASE_URL = BASE_URL.rstrip("/")
 except TypeError:
     BASE_URL = None
-PORT = environ.get('PORT', None)
-if PORT is not None and BASE_URL is not None:
+BASE_URL_PORT = environ.get('BASE_URL_PORT', None)
+if BASE_URL_PORT is not None and BASE_URL is not None:
     while True:
         try:
             rget(BASE_URL).status_code
