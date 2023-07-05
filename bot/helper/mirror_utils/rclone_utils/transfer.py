@@ -88,7 +88,7 @@ class RcloneTransferHelper:
         elif gd_id := remote_opts.get('root_folder_id'):
             option = 'root_folder_id'
         else:
-            return 'wclnf'
+            return 'wcl.conf'
 
         files = await listdir('accounts')
         text = ''.join(f"[sa{i:03}]\ntype = drive\nscope = drive\nservice_account_file = accounts/{sa}\n{option} = {gd_id}\n\n"
