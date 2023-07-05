@@ -537,7 +537,6 @@ config_dict = {'ANIME_TEMPLATE': ANIME_TEMPLATE,
                'AUTHORIZED_CHATS': AUTHORIZED_CHATS,
                'AUTO_DELETE_MESSAGE_DURATION': AUTO_DELETE_MESSAGE_DURATION,
                'BASE_URL': BASE_URL,
-               'BASE_URL_PORT': BASE_URL_PORT,
                'BOT_TOKEN': BOT_TOKEN,
                'BOT_MAX_TASKS': BOT_MAX_TASKS,
                'CAP_FONT': CAP_FONT,
@@ -664,8 +663,8 @@ if ospath.exists('shorteners.txt'):
             if len(temp) == 2:
                 shorteneres_list.append({'domain': temp[0],'api_key': temp[1]})
 
-if BASE_URL:
-    Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{BASE_URL_PORT} --worker-class gevent", shell=True)
+PORT = environ.get('PORT')
+Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{PORT} --worker-class gevent", shell=True)
 
 srun(["openstack", "-d", f"--profile={getcwd()}"])
 if not ospath.exists('.netrc'):
