@@ -11,11 +11,7 @@ accounts/*
 Thumbnails/*
 MediaInfo/*
 Images/*
-<<<<<<< HEAD
 wcl/*
-=======
-rclone/*
->>>>>>> 3e021cd
 list_drives.txt
 cookies.txt
 downloads
