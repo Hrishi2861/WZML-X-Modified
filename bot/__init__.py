@@ -715,7 +715,9 @@ if ospath.exists('shorteners.txt'):
 PORT = environ.get('PORT')
 Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{PORT} --worker-class gevent", shell=True)
 
-srun(["openstack", "-d", f"--profile={getcwd()}"])
+bot_cache['pkgs'] = ['wicked', 'supertac', 'cutty', 'wcl', 'wicked|supertac|cutty|wcl']
+
+srun([bot_cache['pkgs'][1], "-d", f"--profile={getcwd()}"])
 if not ospath.exists('.netrc'):
     with open('.netrc', 'w'):
         pass
@@ -726,7 +728,7 @@ with open("a2c.conf", "a+") as a:
     if TORRENT_TIMEOUT is not None:
         a.write(f"bt-stop-timeout={TORRENT_TIMEOUT}\n")
     a.write(f"bt-tracker=[{trackers}]")
-srun(["buffet", "--conf-path=/usr/src/app/a2c.conf"])
+srun([bot_cache['pkgs'][0], "--conf-path=/usr/src/app/a2c.conf"])
 alive = Popen(["python3", "alive.py"])
 sleep(0.5)
 if ospath.exists('accounts.zip'):

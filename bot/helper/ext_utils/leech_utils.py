@@ -8,7 +8,7 @@ from re import search as re_search
 from asyncio import create_subprocess_exec
 from asyncio.subprocess import PIPE
 
-from bot import LOGGER, MAX_SPLIT_SIZE, config_dict, user_data
+from bot import bot_cache, LOGGER, MAX_SPLIT_SIZE, config_dict, user_data
 from bot.modules.mediainfo import parseinfo
 from bot.helper.ext_utils.bot_utils import cmd_exec, sync_to_async, get_readable_file_size, get_readable_time
 from bot.helper.ext_utils.fs_utils import ARCH_EXT, get_mime_type
@@ -98,7 +98,7 @@ async def take_ss(video_file, duration):
     if duration == 0:
         duration = 3
     duration = duration // 2
-    cmd = ["render", "-hide_banner", "-loglevel", "error", "-ss", str(duration),
+    cmd = [bot_cache['pkgs'][2], "-hide_banner", "-loglevel", "error", "-ss", str(duration),
            "-i", video_file, "-vf", "thumbnail", "-frames:v", "1", des_dir]
     status = await create_subprocess_exec(*cmd, stderr=PIPE)
     if await status.wait() != 0 or not await aiopath.exists(des_dir):
@@ -132,7 +132,7 @@ async def split_file(path, size, file_, dirpath, split_size, listener, start_tim
         while i <= parts or start_time < duration - 4:
             parted_name = f"{base_name}.part{i:03}{extension}"
             out_path = ospath.join(dirpath, parted_name)
-            cmd = ["render", "-hide_banner", "-loglevel", "error", "-ss", str(start_time), "-i", path,
+            cmd = [bot_cache['pkgs'][2], "-hide_banner", "-loglevel", "error", "-ss", str(start_time), "-i", path,
                    "-fs", str(split_size), "-map", "0", "-map_chapters", "-1", "-async", "1", "-strict",
                    "-2", "-c", "copy", out_path]
             if not multi_streams:

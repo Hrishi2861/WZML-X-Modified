@@ -3,7 +3,7 @@ from aiofiles.os import path as aiopath
 from aiofiles import open as aiopen
 from configparser import ConfigParser
 
-from bot import config_dict, bot_loop
+from bot import config_dict, bot_loop, bot_cache
 
 RcloneServe = []
 
@@ -35,7 +35,7 @@ async def rclone_serve_booter():
             RcloneServe.clear()
         except:
             pass
-    cmd = ["zcl", "serve", "http", "--config", "wcl.conf", "--no-modtime",
+    cmd = [bot_cache['pkgs'][3], "serve", "http", "--config", "wcl.conf", "--no-modtime",
            "combine:", "--addr", f":{config_dict['RCLONE_SERVE_PORT']}",
            "--vfs-cache-mode", "full", "--vfs-cache-max-age", "1m0s",
            "--buffer-size", "64M"]

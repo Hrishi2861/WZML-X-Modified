@@ -8,7 +8,7 @@ from aiofiles.os import path as aiopath
 from cloudscraper import create_scraper as cget
 from json import loads, dumps as jdumps
 
-from bot import LOGGER, download_dict, download_dict_lock, categories_dict, config_dict, bot
+from bot import LOGGER, download_dict, download_dict_lock, categories_dict, config_dict, bot, bot_cache
 from bot.helper.ext_utils.task_manager import limit_checker, task_utils
 from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 from bot.helper.telegram_helper.message_utils import sendMessage, editMessage, deleteMessage, sendStatusMessage, delete_links, auto_delete_message, open_category_btns
@@ -65,7 +65,7 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
     remote, src_path = link.split(':', 1)
     src_path = src_path .strip('/')
 
-    cmd = ['zcl', 'lsjson', '--fast-list', '--stat',
+    cmd = [bot_cache['pkgs'][3], 'lsjson', '--fast-list', '--stat',
            '--no-modtime', '--config', config_path, f'{remote}:{src_path}']
     res = await cmd_exec(cmd)
     if res[2] != 0:
@@ -96,11 +96,11 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
     if not link:
         return
     LOGGER.info(f'Cloning Done: {name}')
-    cmd1 = ['zcl', 'lsf', '--fast-list', '-R',
+    cmd1 = [bot_cache['pkgs'][3], 'lsf', '--fast-list', '-R',
             '--files-only', '--config', config_path, destination]
-    cmd2 = ['zcl', 'lsf', '--fast-list', '-R',
+    cmd2 = [bot_cache['pkgs'][3], 'lsf', '--fast-list', '-R',
             '--dirs-only', '--config', config_path, destination]
-    cmd3 = ['zcl', 'size', '--fast-list', '--json',
+    cmd3 = [bot_cache['pkgs'][3], 'size', '--fast-list', '--json',
             '--config', config_path, destination]
     res1, res2, res3 = await gather(cmd_exec(cmd1), cmd_exec(cmd2), cmd_exec(cmd3))
     if res1[2] != res2[2] != res3[2] != 0:

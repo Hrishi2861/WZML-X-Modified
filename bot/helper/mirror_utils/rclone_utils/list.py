@@ -9,7 +9,7 @@ from functools import partial
 from json import loads
 from time import time
 
-from bot import LOGGER, config_dict
+from bot import LOGGER, config_dict, bot_cache
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.message_utils import sendMessage, editMessage, deleteMessage
@@ -197,7 +197,7 @@ class RcloneList:
             self.item_type == itype
         elif self.list_status == 'rcu':
             self.item_type == '--dirs-only'
-        cmd = ['zcl', 'lsjson', self.item_type, '--fast-list', '--no-mimetype',
+        cmd = [bot_cache['pkgs'][3], 'lsjson', self.item_type, '--fast-list', '--no-mimetype',
                '--no-modtime', '--config', self.config_path, f"{self.remote}{self.path}"]
         if self.is_cancelled:
             return

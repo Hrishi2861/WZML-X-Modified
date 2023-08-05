@@ -4,7 +4,7 @@ from json import loads
 from random import SystemRandom
 from string import ascii_letters, digits
 
-from bot import download_dict, download_dict_lock, queue_dict_lock, non_queued_dl, LOGGER
+from bot import bot_cache, download_dict, download_dict_lock, queue_dict_lock, non_queued_dl, LOGGER
 from bot.helper.ext_utils.bot_utils import cmd_exec
 from bot.helper.telegram_helper.message_utils import sendMessage, sendStatusMessage
 from bot.helper.ext_utils.task_manager import is_queued, stop_duplicate_check
@@ -17,9 +17,9 @@ async def add_rclone_download(rc_path, config_path, path, name, listener):
     remote, rc_path = rc_path.split(':', 1)
     rc_path = rc_path.strip('/')
 
-    cmd1 = ['zcl', 'lsjson', '--fast-list', '--stat', '--no-mimetype',
+    cmd1 = [bot_cache['pkgs'][3], 'lsjson', '--fast-list', '--stat', '--no-mimetype',
             '--no-modtime', '--config', config_path, f'{remote}:{rc_path}']
-    cmd2 = ['zcl', 'size', '--fast-list', '--json',
+    cmd2 = [bot_cache['pkgs'][3], 'size', '--fast-list', '--json',
             '--config', config_path, f'{remote}:{rc_path}']
     res1, res2 = await gather(cmd_exec(cmd1), cmd_exec(cmd2))
     if res1[2] != res2[2] != 0:

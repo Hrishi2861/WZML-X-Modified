@@ -8,7 +8,7 @@ from configparser import ConfigParser
 from random import randrange
 from logging import getLogger
 
-from bot import config_dict, GLOBAL_EXTENSION_FILTER
+from bot import config_dict, GLOBAL_EXTENSION_FILTER, bot_cache
 from bot.helper.ext_utils.bot_utils import cmd_exec, sync_to_async
 from bot.helper.ext_utils.fs_utils import get_mime_type, count_files_and_folders
 
@@ -169,7 +169,7 @@ class RcloneTransferHelper:
             epath = f"{remote}:{rc_path}{self.name}"
             destination = epath
 
-        cmd = ['zcl', 'lsjson', '--fast-list', '--no-mimetype',
+        cmd = [bot_cache['pkgs'][3], 'lsjson', '--fast-list', '--no-mimetype',
                '--no-modtime', '--config', config_path, epath]
         res, err, code = await cmd_exec(cmd)
 
@@ -277,7 +277,7 @@ class RcloneTransferHelper:
             else:
                 destination = f"{oremote}:{self.name}"
 
-            cmd = ['zcl', 'link', '--config', oconfig_path, destination]
+            cmd = [bot_cache['pkgs'][3], 'link', '--config', oconfig_path, destination]
             res, err, code = await cmd_exec(cmd)
 
             if code == 0:
@@ -335,7 +335,7 @@ class RcloneTransferHelper:
                 if mime_type != 'Folder':
                     destination += f'/{self.name}' if dst_path else self.name
 
-                cmd = ['zcl', 'link', '--config', config_path, destination]
+                cmd = [bot_cache['pkgs'][3], 'link', '--config', config_path, destination]
                 res, err, code = await cmd_exec(cmd)
 
                 if self.__is_cancelled:
@@ -352,7 +352,7 @@ class RcloneTransferHelper:
     @staticmethod
     def __getUpdatedCommand(config_path, source, destination, rcflags, method):
         ext = '*.{' + ','.join(GLOBAL_EXTENSION_FILTER) + '}'
-        cmd = ['zcl', method, '--fast-list', '--config', config_path, '-P', source, destination,
+        cmd = [bot_cache['pkgs'][3], method, '--fast-list', '--config', config_path, '-P', source, destination,
                '--exclude', ext, '--ignore-case', '--low-level-retries', '1', '-M', '--log-file',
                'rlog.txt', '--log-level', 'DEBUG']
         if rcflags:
