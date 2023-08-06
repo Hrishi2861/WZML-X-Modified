@@ -12,11 +12,24 @@ git clone https://gitlab.com/mysterysd.sd/WZML-X && cd WZML-X
 ```
 
 **Step 2 :** Now Install Heroku in your Sytem or checkout Official Heroku Deploy Docs, or Download via `apt-get` or `npm`
-> For Android : Use `termux` for CLI usage
+> For Android : Use `termux` (Download via FDroid) for CLI usage
 
+**The script requires sudo and isn’t Windows compatible.**
 ```shell
 curl https://cli-assets.heroku.com/install.sh | sh
 ```
+
+**Install with Ubuntu / Debian apt-get**
+```shell
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+```
+
+**Install via `npm` (Not Recommanded)**
+```shell
+npm install -g heroku
+```
+
+**Official Heroku Install Guide :** [Check Here](https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli)
 
 **Step 3 :** Login into Heroku and Log In CLI via Browser 
 
@@ -39,12 +52,26 @@ heroku create --region us --stack container APP_NAME
 - `--stack container` for setting stack to container for Dockerfile.
 - `--buildpack heroku/python` for using build slug for repo deploy and build.
 
-**Step 5 :** Now set all the Required Variables and Files into this Branch MAIN Repo like config.env, accounts.zip, token.pickle, ...
+**Step 5 :** Now set all the Required Variables and Files into this Branch MAIN Repo like config.env, accounts.zip, token.pickle, All Private Files(optional)- 
+  > Only config.env Mabdatory with Only Mandatory Vars Only, After that Put all Private Files or Vars via Bot Settings `/bs`
 
-**To Edit Inside CLI:** _(Termux Users)_
+**To Edit Inside CLI (nano Editor):** _(Termux Users)_
 ```shell
 nano config.env
 ```
+- **Sample config.env** _(Copy these and Paste in Editor and Fill Up)_
+  ```
+  BOT_TOKEN = ""
+  TELEGRAM_API = ""
+  TELEGRAM_HASH = ""
+  OWNER_ID = ""
+  UPSTREAM_REPO = ""
+  UPSTREAM_BRANCH = "hk_wzmlx"
+  DATABASE_URL = ""
+  BASE_URL = ""
+  TORRENT_TIMEOUT = "0"
+  ```
+- After Setup Exit from Editor via `CTRL + X`, followed via `y` and `Enter`...
 
 **Helpful Commands:**
 - **Exit from nano** : `CTRL + X`
@@ -52,7 +79,7 @@ nano config.env
 - **Undo Changes** : `ALT + U`
 - ^ means CTRL _(Termux Users)_
 
-**Step 6 :** Set Local git remote for Heroku.
+**Step 6 :** Set Local git remote for Heroku. Give All Commands One by One.
 
 ```shell
 git add .
@@ -64,6 +91,11 @@ heroku git:remote -a APP_NAME
 
 ```shell
 git push heroku main -f
+```
+
+**Heroku Logs:** When checking Logs, Use this will give Complete Logs.
+```shell
+heroku logs
 ```
 
 **All Heroku CLI Commands :** [Click Here](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-config-set)
