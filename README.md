@@ -1,4 +1,4 @@
-# HEROKU DEPKOY GUIDE
+# **HEROKU DEPLOY GUIDE**
 
 ---
 
@@ -24,30 +24,33 @@ curl https://cli-assets.heroku.com/install.sh | sh
 heroku login
 ```
 
-**Step 4 :** Create Heroku App and specify region with App Name
+**Step 4 :** Create Heroku App and specify stack and region with App Name
 
 ```shell
 heroku create --region us --stack container APP_NAME
 ```
 
-**To Be Noted**: Copy the BASE_URL after the app is Made and Put in BASE_URL when Editing config.env
+**To Be Noted**: Copy the `BASE_URL` after the App is Created and Put the Value in `BASE_URL` when editing `config.env`
 
 **Notes:**
-- `--region eu` for Europe Server and `--region us` for United States Server.
+- `--region eu` for Europe Server.
+- `--region us` for United States Server.
 - `APP_NAME` should be replaced with your unique app name _(Optional)_. If not given it generates a random name.
 - `--stack container` for setting stack to container for Dockerfile.
 - `--buildpack heroku/python` for using build slug for repo deploy and build.
 
-**Step 5 :** Now set all the Required Variables into the Repo like config.env, accounts.zip, token.pickle, ...
+**Step 5 :** Now set all the Required Variables and Files into this Branch MAIN Repo like config.env, accounts.zip, token.pickle, ...
 
-**To Edit Inside CLI:**
+**To Edit Inside CLI:** _(Termux Users)_
 ```shell
 nano config.env
 ```
 
-- To Exit : CTRL + X
-- Check Help : CTRL + G
-- ^ --> CTRL (Termux Users)
+**Helpful Commands:**
+- **Exit from nano** : `CTRL + X`
+- **Check Help** : `CTRL + G`
+- **Undo Changes** : `ALT + U`
+- ^ means CTRL _(Termux Users)_
 
 **Step 6 :** Set Local git remote for Heroku.
 
@@ -67,7 +70,7 @@ git push heroku main -f
 
 ---
 
-## ***Variables Description***
+## ***Variables Description:***
 
 - `UPSTREAM_REPO`: GitLab repository URL, if your repo is private add `https://<deploy_token>:<password>@gitlab.com/<your_username>/<repository_name>
 ` format. `Str`.
@@ -86,3 +89,8 @@ git push heroku main -f
 
 ---
 
+## ***Branch Specifications:***
+
+- All files to be Uploaded in `main` Branch and set Upstream as `hk_wzmlx` Branch
+
+---
