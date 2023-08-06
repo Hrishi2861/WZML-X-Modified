@@ -82,7 +82,7 @@ nano config.env
 **Step 6 :** Set Local git remote for Heroku. Give All Commands One by One.
 
 ```shell
-git add .
+git add . -f
 git commit -m "HK Setup"
 heroku git:remote -a APP_NAME
 ```
