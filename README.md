@@ -33,9 +33,20 @@ npm install -g heroku
 
 **Step 3 :** Login into Heroku and Log In CLI via Browser 
 
+_With Browser_
 ```shell
 heroku login
 ```
+
+**OR**
+
+_Without Browser_
+```shell
+heroku login -i
+```
+
+- Put `Heroku Email` : Heroku Email `email@example.com`
+- Put `Heroku Password` : Heroku API Key. Get from [Here](https://dashboard.heroku.com/account)
 
 **Step 4 :** Create Heroku App and specify stack and region with App Name
 
@@ -75,6 +86,7 @@ nano config.env
 
 **Helpful Commands:**
 - **Exit from nano** : `CTRL + X`
+- **Save File** : `CTRL + S`
 - **Check Help** : `CTRL + G`
 - **Undo Changes** : `ALT + U`
 - ^ means CTRL _(Termux Users)_
@@ -95,8 +107,10 @@ git push heroku main -f
 
 **Heroku Logs:** When checking Logs, Use this will give Complete Logs.
 ```shell
-heroku logs
+heroku logs -a APP_NAME
 ```
+
+- Add arg `-t` for Live Stream Logs and Use `CTRL + C` to Exit from it.
 
 **All Heroku CLI Commands :** [Click Here](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-config-set)
 
@@ -117,7 +131,7 @@ heroku logs
 - `BASE_URL`: Valid BASE URL where the bot is deployed to use torrent web files selection. Format of URL should be `https://app-name-random_code.herokuapp.com/`, where `app-name` is the name of your heroku app Paste the URL got when the App was Made. `Str`
 - `TORRENT_TIMEOUT`: Timeout of dead torrents downloading with qBittorrent and Aria2c in seconds. `Int`
   > Must Add else Bot Crashes! Set to 0 even not Needed
-- `DATABASE_URL`: Database URL of MongoDb to store all your files and Vars. Add this will be Helpful. `Str`
+- `DATABASE_URL`: Database URL of MongoDb to store all your files and Vars. Adding this will be Helpful. `Str`
 
 ---
 
