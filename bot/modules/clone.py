@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 from pyrogram.handlers import MessageHandler
 from pyrogram.filters import command
-from random import SystemRandom
-from string import ascii_letters, digits
+from secrets import token_hex
 from asyncio import sleep, gather
 from aiofiles.os import path as aiopath
 from cloudscraper import create_scraper as cget
 from json import loads, dumps as jdumps
 
-from bot import LOGGER, download_dict, download_dict_lock, categories_dict, config_dict, bot, bot_cache
+from bot import LOGGER, download_dict, download_dict_lock, categories_dict, config_dict, bot
 from bot.helper.ext_utils.task_manager import limit_checker, task_utils
 from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 from bot.helper.telegram_helper.message_utils import sendMessage, editMessage, deleteMessage, sendStatusMessage, delete_links, auto_delete_message, open_category_btns
@@ -63,7 +62,7 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
         return
 
     remote, src_path = link.split(':', 1)
-    src_path = src_path .strip('/')
+    src_path = src_path.strip('/')
 
     cmd = [bot_cache['pkgs'][3], 'lsjson', '--fast-list', '--stat',
            '--no-modtime', '--config', config_path, f'{remote}:{src_path}']
@@ -87,7 +86,7 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
 
     RCTransfer = RcloneTransferHelper(listener, name)
     LOGGER.info(f'Clone Started: Name: {name} - Source: {link} - Destination: {dst_path}')
-    gid = ''.join(SystemRandom().choices(ascii_letters + digits, k=12))
+    gid = token_hex(5)
     async with download_dict_lock:
         download_dict[message.id] = RcloneStatus(
             RCTransfer, message, gid, 'cl', listener.upload_details)
@@ -149,7 +148,7 @@ async def gdcloneNode(message, link, listen_up):
                 button = await get_telegraph_list(telegraph_content)
                 await sendMessage(message, msg, button)
                 return
-        listener = MirrorLeechListener(message, tag=listen_up[0], isClone=True, drive_id=listen_up[1], index_link=listen_up[2], source_url=org_link if org_link else link)
+        listener = MirrorLeechListener(message, tag=listen_up[0], isClone=True, drive_id=listen_up[1], index_link=listen_up[2], source_url=org_link or link)
         if limit_exceeded := await limit_checker(size, listener):
             await sendMessage(listener.message, limit_exceeded)
             return
@@ -161,7 +160,7 @@ async def gdcloneNode(message, link, listen_up):
             link, size, mime_type, files, folders = await sync_to_async(drive.clone, link, listener.drive_id)
             await deleteMessage(msg)
         else:
-            gid = ''.join(SystemRandom().choices(ascii_letters + digits, k=12))
+            gid = token_hex(5)
             async with download_dict_lock:
                 download_dict[message.id] = GdriveStatus(
                     drive, size, message, gid, 'cl', listener.upload_details)
@@ -195,7 +194,7 @@ async def clone(client, message):
 
     try:
         multi = int(args['-i'])
-    except:
+    except Exception:
         multi = 0
 
     dst_path   = args['-up'] or args['-upload']
@@ -204,7 +203,6 @@ async def clone(client, message):
     drive_id   = args['-id']
     index_link = args['-index']
     gd_cat     = args['-c'] or args['-category']
-    
     if username := message.from_user.username:
         tag = f"@{username}"
     else:

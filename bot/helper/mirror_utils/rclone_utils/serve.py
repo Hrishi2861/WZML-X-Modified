@@ -7,7 +7,6 @@ from bot import config_dict, bot_loop, bot_cache
 
 RcloneServe = []
 
-
 async def rclone_serve_booter():
     if not config_dict['RCLONE_SERVE_URL'] or not await aiopath.exists('wcl.conf'):
         if RcloneServe:

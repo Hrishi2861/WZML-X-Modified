@@ -81,7 +81,7 @@ class YtSelection:
             pfunc, filters=regex('^ytq') & user(self.__user_id)), group=-1)
         try:
             await wait_for(self.event.wait(), timeout=self.__timeout)
-        except:
+        except Exception:
             await editMessage(self.__reply_to, 'Timed Out. Task has been cancelled!')
             self.qual = None
             self.is_cancelled = True
@@ -258,6 +258,8 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
                 '-index': '',
                 '-c': '', '-category': '',
                 '-ud': '', '-dump': '',
+                '-ss': '0', '-screenshots': '',
+                '-t': '', '-thumb': '',
     }
 
     args = arg_parser(input_list[1:], arg_base)
@@ -283,7 +285,8 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
     user_dump   = args['-ud'] or args['-dump']
     bulk_start  = 0
     bulk_end    = 0
-
+    thumb       = args['-t'] or args['-thumb']
+    sshots      = int(ss) if (ss := (args['-ss'] or args['-screenshots'])).isdigit() else 0
 
     if not isinstance(isBulk, bool):
         dargs = isBulk.split(':')
@@ -291,7 +294,7 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
         if len(dargs) == 2:
             bulk_end = dargs[1] or None
         isBulk = True
-        
+
     if drive_id and is_gdrive_link(drive_id):
         drive_id = GoogleDriveHelper.getIdFromUrl(drive_id)
 
@@ -344,8 +347,6 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
 
     path = f'{DOWNLOAD_DIR}{message.id}{folder_name}'
 
-    opt = opt or config_dict['YT_DLP_OPTIONS']
-
     if len(text) > 1 and text[1].startswith('Tag: '):
         tag, id_ = text[1].split('Tag: ')[1].split()
         message.from_user = await client.get_users(id_)
@@ -355,6 +356,13 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
             pass
     elif sender_chat := message.sender_chat:
         tag = sender_chat.title
+
+    user_id = message.from_user.id
+
+    user_dict = user_data.get(user_id, {})
+
+    opt = opt or user_dict.get('yt_opt') or config_dict['YT_DLP_OPTIONS']
+    
     if username := message.from_user.username:
         tag = f'@{username}'
     else:
@@ -455,7 +463,8 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
             await delete_links(message)
             return
 
-    listener = MirrorLeechListener(message, compress, isLeech=isLeech, tag=tag, sameDir=sameDir, rcFlags=rcf, upPath=up, drive_id=drive_id, index_link=index_link, isYtdlp=True, source_url=link)
+    listener = MirrorLeechListener(message, compress, isLeech=isLeech, tag=tag, sameDir=sameDir, rcFlags=rcf, upPath=up, drive_id=drive_id, index_link=index_link, isYtdlp=True, source_url=link, leech_utils={'screenshots': sshots, 'thumb': thumb})
+
 
     if 'mdisk.me' in link:
         name, link = await _mdisk(link, name)
@@ -465,6 +474,12 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
         yt_opt = opt.split('|')
         for ytopt in yt_opt:
             key, value = map(str.strip, ytopt.split(':', 1))
+            if key == 'format':
+                if select:
+                    qual = ''
+                elif value.startswith('ba/b-'):
+                    qual = value
+                    continue
             if value.startswith('^'):
                 if '.' in value or value == '^inf':
                     value = float(value.split('^')[1])
@@ -491,13 +506,8 @@ async def _ytdl(client, message, isLeech=False, sameDir=None, bulk=[]):
 
     __run_multi()
 
-    if not select:
-        user_id = message.from_user.id
-        user_dict = user_data.get(user_id, {})
-        if 'format' in options:
-            qual = options['format']
-        elif user_dict.get('yt_opt'):
-            qual = user_dict['yt_opt']
+    if not select and (not qual and 'format' in options):
+        qual = options['format']
 
     if not qual:
         qual = await YtSelection(client, message).get_quality(result)
