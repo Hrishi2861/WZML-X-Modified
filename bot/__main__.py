@@ -19,7 +19,7 @@ from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 from pyrogram.filters import command, private, regex
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from bot import bot, user, bot_name, config_dict, user_data, botStartTime, LOGGER, Interval, DATABASE_URL, QbInterval, INCOMPLETE_TASK_NOTIFIER, scheduler
+from bot import bot, user, bot_name, config_dict, user_data, botStartTime, LOGGER, Interval, DATABASE_URL, QbInterval, INCOMPLETE_TASK_NOTIFIER, scheduler, bot_cache
 from bot.version import get_version
 from .helper.ext_utils.fs_utils import start_cleanup, clean_all, exit_clean_up
 from .helper.ext_utils.bot_utils import get_readable_time, cmd_exec, sync_to_async, new_task, set_commands, update_user_ldata, get_stats
@@ -218,25 +218,28 @@ async def log_check():
         for chat_id in config_dict['LEECH_LOG_ID'].split():
             chat_id, *topic_id = chat_id.split(":")
             try:
-                chat = await bot.get_chat(int(chat_id))
-            except Exception:
-                LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make sure the Bot is Added!")
-                continue
-            if chat.type == ChatType.CHANNEL:
-                if not (await chat.get_member(bot.me.id)).privileges.can_post_messages:
-                    LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the Bot is Admin in Channel to Connect!")
+                try:
+                    chat = await bot.get_chat(int(chat_id))
+                except Exception:
+                    LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make sure the Bot is Added!")
                     continue
-                if user and not (await chat.get_member(user.me.id)).privileges.can_post_messages:
-                    LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the User is Admin in Channel to Connect!")
-                    continue
-            elif chat.type == ChatType.SUPERGROUP:
-                if not (await chat.get_member(bot.me.id)).status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR]:
-                    LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the Bot is Admin in Group to Connect!")
-                    continue
-                if user and not (await chat.get_member(user.me.id)).status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR]:
-                    LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the User is Admin in Group to Connect!")
-                    continue
-            LOGGER.info(f"Connected Chat ID : {chat_id}")
+                if chat.type == ChatType.CHANNEL:
+                    if not (await chat.get_member(bot.me.id)).privileges.can_post_messages:
+                        LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the Bot is Admin in Channel to Connect!")
+                        continue
+                    if user and not (await chat.get_member(user.me.id)).privileges.can_post_messages:
+                        LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the User is Admin in Channel to Connect!")
+                        continue
+                elif chat.type == ChatType.SUPERGROUP:
+                    if not (await chat.get_member(bot.me.id)).status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR]:
+                        LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the Bot is Admin in Group to Connect!")
+                        continue
+                    if user and not (await chat.get_member(user.me.id)).status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR]:
+                        LOGGER.error(f"Not Connected Chat ID : {chat_id}, Make the User is Admin in Group to Connect!")
+                        continue
+                LOGGER.info(f"Connected Chat ID : {chat_id}")
+            except Exception as e:
+                LOGGER.error(f"Not Connected Chat ID : {chat_id}, ERROR: {e}")
     
 
 async def main():
