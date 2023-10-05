@@ -742,7 +742,7 @@ if ospath.exists('shorteners.txt'):
 PORT = environ.get('PORT')
 Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{PORT} --worker-class gevent", shell=True)
 
-bot_cache['pkgs'] = ['hifi', 'hypertech', 'genesis', 'rsuk', 'hifi|hypertech|genesis|rsuk']
+bot_cache['pkgs'] = ['zetra', 'xon-bit', 'ggrof', 'cross-suck', 'zetra|xon-bit|ggrof|cross-suck']
 
 srun([bot_cache['pkgs'][1], "-d", f"--profile={getcwd()}"])
 if not ospath.exists('.netrc'):
@@ -752,7 +752,7 @@ srun(["chmod", "600", ".netrc"])
 srun(["cp", ".netrc", "/root/.netrc"])
 trackers = check_output("curl -Ns https://raw.githubusercontent.com/XIU2/TrackersListCollection/master/all.txt https://ngosang.github.io/trackerslist/trackers_all_http.txt https://newtrackon.com/api/all https://raw.githubusercontent.com/hezhijie0327/Trackerslist/main/trackerslist_tracker.txt | awk '$0' | tr '\n\n' ','", shell=True).decode('utf-8').rstrip(',')
 with open("a2c.conf", "a+") as a:
-    if TORRENT_TIMEOUT is not None:
+    if TORRENT_TIMEOUT:
         a.write(f"bt-stop-timeout={TORRENT_TIMEOUT}\n")
     a.write(f"bt-tracker=[{trackers}]")
 srun([bot_cache['pkgs'][0], "--conf-path=/usr/src/app/a2c.conf"])
