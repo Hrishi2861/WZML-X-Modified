@@ -57,7 +57,7 @@ if UPGRADE_PACKAGES.lower() == 'true':
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + ' '.join(packages), shell=True)
 
-UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
+UPSTREAM_REPO = environ.get('UPSTREAM_REPO', 'https://gitlab.com/mysterysd.sd/WZML-X')
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
 
