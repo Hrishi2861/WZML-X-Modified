@@ -6,7 +6,7 @@ class WZMLStyle:
     ST_BN1_URL = 'https://t.me/hrishikesh2861'
     ST_BN2_NAME = '🚀 Updates 🚀'
     ST_BN2_URL = 'https://t.me/JetMirror'
-    ST_MSG = '''<i>This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. Repo used is WZML-X. And done some Modifications</i>
+    ST_MSG = '''<i>This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. Repo used is WZML-X. And done some Modifications ❤️.</i>
 <b>Type {help_command} to get a list of available commands</b>'''
     ST_BOTPM = '''<i>Now, This bot will send all your files and links here. Start Using ...</i>'''
     ST_UNAUTH = '''<i>You Are not authorized user! Deploy your own WZML-X Mirror-Leech bot</i>'''
