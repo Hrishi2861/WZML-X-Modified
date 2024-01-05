@@ -6,7 +6,7 @@ from asyncio import create_subprocess_exec, gather, run as asyrun
 from uuid import uuid4
 from base64 import b64decode
 from importlib import import_module, reload
-
+import asyncio
 from requests import get as rget
 from pytz import timezone
 from bs4 import BeautifulSoup
@@ -40,6 +40,9 @@ async def stats(client, message):
 
 @new_task
 async def start(client, message):
+    sticker_message = await message.reply_sticker("CAACAgIAAxkBAAEXyPRledQ6luKt1QABSPMPi2s4rgH3xMUAAmkdAALpI4hJ8xCGgSybQv8zBA")
+    await asyncio.sleep(2)
+    await sticker_message.delete()
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
     buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
