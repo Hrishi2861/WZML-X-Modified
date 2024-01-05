@@ -15,6 +15,9 @@ from bot.helper.themes import BotTheme
 
 @new_task
 async def mirror_status(_, message):
+    sticker_message = await message.reply_sticker("CAACAgIAAxkBAAEXzJtlezBU92o9SmsFleHxnuyQWpkHnQACogEAAjDUnRH1ZwABIuJAFVczBA")
+    await asyncio.sleep(2)
+    await sticker_message.delete()
     async with download_dict_lock:
         count = len(download_dict)
     if count == 0:
