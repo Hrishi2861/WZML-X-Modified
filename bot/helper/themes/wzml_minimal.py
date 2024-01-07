@@ -65,7 +65,7 @@ class WZMLStyle:
 ┠ <b>OS Version :</b> {os_version}
 ┖ <b>OS Arch :</b> {os_arch}
 
-⌬ <b><i>🛜 NETWORK STATS :</i></b>
+┎ <b><i>🛜 NETWORK STATS :</i></b>
 ┠ <b>Upload Data:</b> {up_data}
 ┠ <b>Download Data:</b> {dl_data}
 ┠ <b>Pkts Sent:</b> {pkt_sent}k
