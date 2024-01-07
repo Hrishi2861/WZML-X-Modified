@@ -43,21 +43,21 @@ class WZMLStyle:
     BOT_STATS = ''' <b><i><u>🚀Jet Bot Statistics</u></i></b>
 ┖ <b>Bot Uptime :</b> {bot_uptime}
 
-┎ <b><i>RAM ( MEMORY ) :</i></b>
+┎ <b><i>🔴 RAM ( MEMORY ) :</i></b>
 ┃ {ram_bar} {ram}%
 ┖ <b>U :</b> {ram_u} | <b>F :</b> {ram_f} | <b>T :</b> {ram_t}
 
-┎ <b><i>SWAP MEMORY :</i></b>
+┎ <b><i>⚙️ SWAP MEMORY :</i></b>
 ┃ {swap_bar} {swap}%
 ┖ <b>U :</b> {swap_u} | <b>F :</b> {swap_f} | <b>T :</b> {swap_t}
 
-┎ <b><i>DISK :</i></b>
+┎ <b><i>💿 DISK :</i></b>
 ┃ {disk_bar} {disk}%
 ┃ <b>Total Disk Read :</b> {disk_read}
 ┃ <b>Total Disk Write :</b> {disk_write}
 ┖ <b>U :</b> {disk_u} | <b>F :</b> {disk_f} | <b>T :</b> {disk_t}
 
-<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
+<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     
     '''
     SYS_STATS = '''<b><i><u>🚀Jet System Statistics</u></i></b>
@@ -65,14 +65,14 @@ class WZMLStyle:
 ┠ <b>OS Version :</b> {os_version}
 ┖ <b>OS Arch :</b> {os_arch}
 
-⌬ <b><i>NETWORK STATS :</i></b>
+⌬ <b><i>🛜 NETWORK STATS :</i></b>
 ┠ <b>Upload Data:</b> {up_data}
 ┠ <b>Download Data:</b> {dl_data}
 ┠ <b>Pkts Sent:</b> {pkt_sent}k
 ┠ <b>Pkts Received:</b> {pkt_recv}k
 ┖ <b>Total I/O Data:</b> {tl_data}
 
-┎ <b>CPU :</b>
+┎ <b>🖥 CPU :</b>
 ┃ {cpu_bar} {cpu}%
 ┠ <b>CPU Frequency :</b> {cpu_freq}
 ┠ <b>System Avg Load :</b> {sys_load}
@@ -80,7 +80,7 @@ class WZMLStyle:
 ┠ <b>Total Core(s) :</b> {total_core}
 ┖ <b>Usable CPU(s) :</b> {cpu_use}
 
-<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
+<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     '''
     REPO_STATS = '''⌬ <b><i>WZML-X REPO STATISTICS :</i></b>
 ┠ <b>Bot Updated :</b> {last_commit}
@@ -90,7 +90,7 @@ class WZMLStyle:
 
 ⌬ <b>REMARKS :</b> <code>{remarks}</code>
 
-<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
+<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     '''
     BOT_LIMITS = '''<b><i><u>🚀Jet Bot Limitations</u></i></b>
 ┠ <b>Direct Limit :</b> {DL} GB
@@ -107,7 +107,7 @@ class WZMLStyle:
 ┠ <b>User Parallel Tasks :</b> {UT}
 ┖ <b>Bot Parallel Tasks :</b> {BT}
 
-<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
+<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     '''
     # ---------------------
 
