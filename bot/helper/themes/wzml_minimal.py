@@ -56,6 +56,8 @@ class WZMLStyle:
 ┃ <b>Total Disk Read :</b> {disk_read}
 ┃ <b>Total Disk Write :</b> {disk_write}
 ┖ <b>U :</b> {disk_u} | <b>F :</b> {disk_f} | <b>T :</b> {disk_t}
+
+<b><a href="https:t.me/JetMirror">/n/nBOT BY 🚀Jet-MIRROR</a><b/>
     
     '''
     SYS_STATS = '''<b><i><u>🚀Jet System Statistics</u></i></b>
