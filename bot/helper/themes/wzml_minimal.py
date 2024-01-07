@@ -79,6 +79,8 @@ class WZMLStyle:
 ┠ <b>P-Core(s) :</b> {p_core} | <b>V-Core(s) :</b> {v_core}
 ┠ <b>Total Core(s) :</b> {total_core}
 ┖ <b>Usable CPU(s) :</b> {cpu_use}
+
+<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
     '''
     REPO_STATS = '''⌬ <b><i>WZML-X REPO STATISTICS :</i></b>
 ┠ <b>Bot Updated :</b> {last_commit}
@@ -87,6 +89,8 @@ class WZMLStyle:
 ┖ <b>Last ChangeLog :</b> {commit_details}
 
 ⌬ <b>REMARKS :</b> <code>{remarks}</code>
+
+<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
     '''
     BOT_LIMITS = '''<b><i><u>🚀Jet Bot Limitations</u></i></b>
 ┠ <b>Direct Limit :</b> {DL} GB
@@ -102,6 +106,8 @@ class WZMLStyle:
 ┠ <b>User Time Limit :</b> {UTI} / task
 ┠ <b>User Parallel Tasks :</b> {UT}
 ┖ <b>Bot Parallel Tasks :</b> {BT}
+
+<b><a href="https://t.me/JetMirror">BOT BY 🚀JET-MIRROR</a></b>
     '''
     # ---------------------
 
