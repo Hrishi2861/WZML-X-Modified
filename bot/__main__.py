@@ -106,6 +106,9 @@ async def login(_, message):
 
 
 async def restart(client, message):
+    sticker_message = await message.reply_sticker("CAACAgUAAxkBAAEXrSRlbwYlArKGw0lVGUGHquKMqbu3fQACLggAAmCIwVXm28BgWp1jmzME")
+    await asyncio.sleep(2)
+    await sticker_message.delete()
     restart_message = await sendMessage(message, BotTheme('RESTARTING'))
     if scheduler.running:
         scheduler.shutdown(wait=False)
