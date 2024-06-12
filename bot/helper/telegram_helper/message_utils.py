@@ -77,8 +77,6 @@ async def sendCustomMsg(chat_id, text, buttons=None, photo=None, debug=False):
     except ReplyMarkupInvalid:
         return await sendCustomMsg(chat_id, text, None, photo)
     except Exception as e:
-        if debug:
-            raise e
         LOGGER.error(format_exc())
         return str(e)
 

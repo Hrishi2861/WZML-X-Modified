@@ -1029,7 +1029,7 @@ async def update_private_file(_, message, pre_message):
             await sendMessage(message, msg, buttons.build_menu(2))
         else:
             await deleteMessage(message)
-    if file_name == 'wcl.conf':
+    if file_name == 'rclone.conf':
         await rclone_serve_booter()
     await update_buttons(pre_message)
     if DATABASE_URL:

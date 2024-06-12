@@ -8,7 +8,7 @@ from configparser import ConfigParser
 from random import randrange
 from logging import getLogger
 
-from bot import config_dict, GLOBAL_EXTENSION_FILTER, bot_cache
+from bot import config_dict, GLOBAL_EXTENSION_FILTER
 from bot.helper.ext_utils.bot_utils import cmd_exec, sync_to_async
 from bot.helper.ext_utils.fs_utils import get_mime_type, count_files_and_folders
 
@@ -88,7 +88,7 @@ class RcloneTransferHelper:
         elif gd_id := remote_opts.get('root_folder_id'):
             option = 'root_folder_id'
         else:
-            return 'wcl.conf'
+            return 'rclone.conf'
 
         files = await listdir('accounts')
         text = ''.join(f"[sa{i:03}]\ntype = drive\nscope = drive\nservice_account_file = accounts/{sa}\n{option} = {gd_id}\n\n"
@@ -135,10 +135,10 @@ class RcloneTransferHelper:
             return
         remote_type = remote_opts['type']
 
-        if remote_type == 'drive' and config_dict['USE_SERVICE_ACCOUNTS'] and config_path == 'wcl.conf' \
+        if remote_type == 'drive' and config_dict['USE_SERVICE_ACCOUNTS'] and config_path == 'rclone.conf' \
                 and await aiopath.isdir('accounts') and not remote_opts.get('service_account_file'):
             config_path = await self.__create_rc_sa(remote, remote_opts)
-            if config_path != 'wcl.conf':
+            if config_path != 'rclone.conf':
                 sa_files = await listdir('accounts')
                 self.__sa_number = len(sa_files)
                 self.__sa_index = randrange(self.__sa_number)
@@ -169,7 +169,7 @@ class RcloneTransferHelper:
             epath = f"{remote}:{rc_path}{self.name}"
             destination = epath
 
-        cmd = [bot_cache['pkgs'][3], 'lsjson', '--fast-list', '--no-mimetype',
+        cmd = ['rclone', 'lsjson', '--fast-list', '--no-mimetype',
                '--no-modtime', '--config', config_path, epath]
         res, err, code = await cmd_exec(cmd)
 
@@ -216,9 +216,9 @@ class RcloneTransferHelper:
         rc_path = self.__listener.upPath.strip('/')
         if rc_path.startswith('mrcc:'):
             rc_path = rc_path.split('mrcc:', 1)[1]
-            oconfig_path = f'wcl/{self.__listener.message.from_user.id}.conf'
+            oconfig_path = f'rclone/{self.__listener.message.from_user.id}.conf'
         else:
-            oconfig_path = 'wcl.conf'
+            oconfig_path = 'rclone.conf'
 
         oremote, rc_path = rc_path.split(':', 1)
 
@@ -243,10 +243,10 @@ class RcloneTransferHelper:
 
         fremote = oremote
         fconfig_path = oconfig_path
-        if remote_type == 'drive' and config_dict['USE_SERVICE_ACCOUNTS'] and fconfig_path == 'wcl.conf' \
+        if remote_type == 'drive' and config_dict['USE_SERVICE_ACCOUNTS'] and fconfig_path == 'rclone.conf' \
                 and await aiopath.isdir('accounts') and not remote_opts.get('service_account_file'):
             fconfig_path = await self.__create_rc_sa(oremote, remote_opts)
-            if fconfig_path != 'wcl.conf':
+            if fconfig_path != 'rclone.conf':
                 sa_files = await listdir('accounts')
                 self.__sa_number = len(sa_files)
                 self.__sa_index = randrange(self.__sa_number)
@@ -277,7 +277,7 @@ class RcloneTransferHelper:
             else:
                 destination = f"{oremote}:{self.name}"
 
-            cmd = [bot_cache['pkgs'][3], 'link', '--config', oconfig_path, destination]
+            cmd = ['rclone', 'link', '--config', oconfig_path, destination]
             res, err, code = await cmd_exec(cmd)
 
             if code == 0:
@@ -335,7 +335,7 @@ class RcloneTransferHelper:
                 if mime_type != 'Folder':
                     destination += f'/{self.name}' if dst_path else self.name
 
-                cmd = [bot_cache['pkgs'][3], 'link', '--config', config_path, destination]
+                cmd = ['rclone', 'link', '--config', config_path, destination]
                 res, err, code = await cmd_exec(cmd)
 
                 if self.__is_cancelled:
@@ -352,7 +352,7 @@ class RcloneTransferHelper:
     @staticmethod
     def __getUpdatedCommand(config_path, source, destination, rcflags, method):
         ext = '*.{' + ','.join(GLOBAL_EXTENSION_FILTER) + '}'
-        cmd = [bot_cache['pkgs'][3], method, '--fast-list', '--config', config_path, '-P', source, destination,
+        cmd = ['rclone', method, '--fast-list', '--config', config_path, '-P', source, destination,
                '--exclude', ext, '--ignore-case', '--low-level-retries', '1', '-M', '--log-file',
                'rlog.txt', '--log-level', 'DEBUG']
         if rcflags:

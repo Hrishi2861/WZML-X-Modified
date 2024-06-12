@@ -37,7 +37,7 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     text = message.text.split('\n')
     input_list = text[0].split(' ')
 
-    arg_base = {'link': '',
+    arg_base = {'link': '', 
                 '-i': '0',
                 '-m': '', '-sd': '', '-samedir': '',
                 '-d': False, '-seed': False,
@@ -65,7 +65,7 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     cmd = input_list[0].split('@')[0]
 
     multi = int(args['-i']) if args['-i'].isdigit() else 0
-
+    
     link          = args['link']
     folder_name   = args['-m'] or args['-sd'] or args['-samedir']
     seed          = args['-d'] or args['-seed']
@@ -290,9 +290,9 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
             return
         elif up not in ['rcl', 'gd', 'ddl']:
             if up.startswith('mrcc:'):
-                config_path = f'wcl/{message.from_user.id}.conf'
+                config_path = f'rclone/{message.from_user.id}.conf'
             else:
-                config_path = 'wcl.conf'
+                config_path = 'rclone.conf'
             if not await aiopath.exists(config_path):
                 await sendMessage(message, f"RClone Config: {config_path} not Exists!")
                 await delete_links(message)
@@ -333,7 +333,7 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
             await delete_links(message)
             return
 
-    listener = MirrorLeechListener(message, compress, extract, isQbit, isLeech, tag, select, seed,
+    listener = MirrorLeechListener(message, compress, extract, isQbit, isLeech, tag, select, seed, 
                                     sameDir, rcf, up, join, drive_id=drive_id, index_link=index_link, 
                                     source_url=org_link or link, leech_utils={'screenshots': sshots, 'thumb': thumb})
 
@@ -345,9 +345,9 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
     elif is_rclone_path(link):
         if link.startswith('mrcc:'):
             link = link.split('mrcc:', 1)[1]
-            config_path = f'wcl/{message.from_user.id}.conf'
+            config_path = f'rclone/{message.from_user.id}.conf'
         else:
-            config_path = 'wcl.conf'
+            config_path = 'rclone.conf'
         if not await aiopath.exists(config_path):
             await sendMessage(message, f"<b>RClone Config:</b> {config_path} not Exists!")
             await delete_links(message)

@@ -484,7 +484,7 @@ class MirrorLeechListener:
                             saved = True
                             buttons.ibutton(BotTheme('SAVE_MSG'), 'save', 'footer')
                         await sendMessage(self.message, message + fmsg, buttons.build_menu(2), photo=self.random_pic)
-
+            
             if self.seed:
                 if self.newDir:
                     await clean_target(self.newDir)
@@ -526,10 +526,10 @@ class MirrorLeechListener:
                             if mime_type.startswith(('image', 'video', 'audio')):
                                 share_urls = f'{INDEX_URL}/{url_path}?a=view'
                                 buttons.ubutton(BotTheme('VIEW_LINK'), share_urls)
+                
             else:
                 msg += BotTheme('RCPATH', RCpath=rclonePath)
             msg += BotTheme('M_CC', Tag=self.tag)
-
             message = msg
             
             btns = ButtonMaker()

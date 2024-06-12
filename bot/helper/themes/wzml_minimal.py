@@ -2,11 +2,11 @@
 class WZMLStyle:
     # ----------------------
     # async def start(client, message) ---> __main__.py
-    ST_BN1_NAME = '☀️ OWNER ☀️'
-    ST_BN1_URL = 'https://t.me/hrishikesh2861'
-    ST_BN2_NAME = '🚀 Updates 🚀'
-    ST_BN2_URL = 'https://t.me/JetMirror'
-    ST_MSG = '''<i>This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. Repo used is WZML-X. And done some Modifications ❤️.</i>
+    ST_BN1_NAME = 'Repo'
+    ST_BN1_URL = 'https://www.github.com/weebzone/WZML-X'
+    ST_BN2_NAME = 'Updates'
+    ST_BN2_URL = 'https://t.me/WZML_X'
+    ST_MSG = '''<i>This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers.</i>
 <b>Type {help_command} to get a list of available commands</b>'''
     ST_BOTPM = '''<i>Now, This bot will send all your files and links here. Start Using ...</i>'''
     ST_UNAUTH = '''<i>You Are not authorized user! Deploy your own WZML-X Mirror-Leech bot</i>'''
@@ -40,59 +40,53 @@ class WZMLStyle:
     HELP_HEADER = "㊂ <b><i>Help Guide Menu!</i></b>\n\n<b>NOTE: <i>Click on any CMD to see more minor detalis.</i></b>"
 
     # async def stats(client, message):
-    BOT_STATS = ''' <b><i><u>🚀Jet Bot Statistics</u></i></b>
+    BOT_STATS = '''⌬ <b><i>BOT STATISTICS :</i></b>
 ┖ <b>Bot Uptime :</b> {bot_uptime}
 
-┎ <b><i>🔴 RAM ( MEMORY ) :</i></b>
+┎ <b><i>RAM ( MEMORY ) :</i></b>
 ┃ {ram_bar} {ram}%
 ┖ <b>U :</b> {ram_u} | <b>F :</b> {ram_f} | <b>T :</b> {ram_t}
 
-┎ <b><i>⚙️ SWAP MEMORY :</i></b>
+┎ <b><i>SWAP MEMORY :</i></b>
 ┃ {swap_bar} {swap}%
 ┖ <b>U :</b> {swap_u} | <b>F :</b> {swap_f} | <b>T :</b> {swap_t}
 
-┎ <b><i>💿 DISK :</i></b>
+┎ <b><i>DISK :</i></b>
 ┃ {disk_bar} {disk}%
 ┃ <b>Total Disk Read :</b> {disk_read}
 ┃ <b>Total Disk Write :</b> {disk_write}
 ┖ <b>U :</b> {disk_u} | <b>F :</b> {disk_f} | <b>T :</b> {disk_t}
-
-<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     
     '''
-    SYS_STATS = '''<b><i><u>🚀Jet System Statistics</u></i></b>
+    SYS_STATS = '''⌬ <b><i>OS SYSTEM :</i></b>
 ┠ <b>OS Uptime :</b> {os_uptime}
 ┠ <b>OS Version :</b> {os_version}
 ┖ <b>OS Arch :</b> {os_arch}
 
-┎ <b><i>🛜 NETWORK STATS :</i></b>
+⌬ <b><i>NETWORK STATS :</i></b>
 ┠ <b>Upload Data:</b> {up_data}
 ┠ <b>Download Data:</b> {dl_data}
 ┠ <b>Pkts Sent:</b> {pkt_sent}k
 ┠ <b>Pkts Received:</b> {pkt_recv}k
 ┖ <b>Total I/O Data:</b> {tl_data}
 
-┎ <b>🖥 CPU :</b>
+┎ <b>CPU :</b>
 ┃ {cpu_bar} {cpu}%
 ┠ <b>CPU Frequency :</b> {cpu_freq}
 ┠ <b>System Avg Load :</b> {sys_load}
 ┠ <b>P-Core(s) :</b> {p_core} | <b>V-Core(s) :</b> {v_core}
 ┠ <b>Total Core(s) :</b> {total_core}
 ┖ <b>Usable CPU(s) :</b> {cpu_use}
-
-<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     '''
-    REPO_STATS = '''⌬ <b><i>WZML-X REPO STATISTICS :</i></b>
+    REPO_STATS = '''⌬ <b><i>REPO STATISTICS :</i></b>
 ┠ <b>Bot Updated :</b> {last_commit}
 ┠ <b>Current Version :</b> {bot_version}
 ┠ <b>Latest Version :</b> {lat_version}
 ┖ <b>Last ChangeLog :</b> {commit_details}
 
 ⌬ <b>REMARKS :</b> <code>{remarks}</code>
-
-<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     '''
-    BOT_LIMITS = '''<b><i><u>🚀Jet Bot Limitations</u></i></b>
+    BOT_LIMITS = '''⌬ <b><i>BOT LIMITATIONS :</i></b>
 ┠ <b>Direct Limit :</b> {DL} GB
 ┠ <b>Torrent Limit :</b> {TL} GB
 ┠ <b>GDrive Limit :</b> {GL} GB
@@ -106,8 +100,6 @@ class WZMLStyle:
 ┠ <b>User Time Limit :</b> {UTI} / task
 ┠ <b>User Parallel Tasks :</b> {UT}
 ┖ <b>Bot Parallel Tasks :</b> {BT}
-
-<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     '''
     # ---------------------
 
@@ -208,8 +200,8 @@ class WZMLStyle:
     NON_ENGINE =     '\n┠ <b>Engine:</b> {Engine}'
 
     ####--------OVERALL MSG FOOTER----------
-    USER =              '\n┠ <b>User:</b> {User} | '
-    ID =                                           '<b>ID:</b> <code>{Id}</code>'
+    USER =              '\n┠ <b>User:</b> <code>{User}</code> | '
+    ID =                                                        '<b>ID:</b> <code>{Id}</code>'
     BTSEL =          '\n┠ <b>Select:</b> {Btsel}'
     CANCEL =         '\n┖ {Cancel}\n\n'
 
@@ -222,7 +214,7 @@ class WZMLStyle:
     Ram = '\n┠ <b>RAM:</b> {ram}% | '
     uptime =                     '<b>UPTIME:</b> {uptime}'
     DL = '\n┖ <b>DL:</b> {DL}/s | '
-    UL =                        '<b>UL:</b> {UL}/s\n\n<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>'
+    UL =                        '<b>UL:</b> {UL}/s'
 
     ###--------BUTTONS-------
     PREVIOUS = '⫷'

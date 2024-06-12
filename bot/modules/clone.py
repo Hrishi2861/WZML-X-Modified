@@ -35,9 +35,9 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
 
     if link.startswith('mrcc:'):
         link = link.split('mrcc:', 1)[1]
-        config_path = f'wcl/{message.from_user.id}.conf'
+        config_path = f'rclone/{message.from_user.id}.conf'
     else:
-        config_path = 'wcl/.conf'
+        config_path = 'rclone.conf'
 
     if not await aiopath.exists(config_path):
         await sendMessage(message, f"<b>RClone Config:</b> {config_path} not Exists!")
@@ -54,17 +54,18 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
         await sendMessage(message, 'Given Wrong RClone Destination!')
         return
     if dst_path.startswith('mrcc:'):
-        if config_path != f'wcl/{message.from_user.id}.conf':
-            await sendMessage(message, 'You should use same wcl.conf to clone between paths!')
+        if config_path != f'rclone/{message.from_user.id}.conf':
+            await sendMessage(message, 'You should use same rclone.conf to clone between paths!')
             return
-    elif config_path != 'wcl.conf':
-        await sendMessage(message, 'You should use same wcl.conf to clone between paths!')
+        dst_path = dst_path.lstrip('mrcc:')
+    elif config_path != 'rclone.conf':
+        await sendMessage(message, 'You should use same rclone.conf to clone between paths!')
         return
 
     remote, src_path = link.split(':', 1)
     src_path = src_path.strip('/')
 
-    cmd = [bot_cache['pkgs'][3], 'lsjson', '--fast-list', '--stat',
+    cmd = ['rclone', 'lsjson', '--fast-list', '--stat',
            '--no-modtime', '--config', config_path, f'{remote}:{src_path}']
     res = await cmd_exec(cmd)
     if res[2] != 0:
@@ -95,11 +96,11 @@ async def rcloneNode(client, message, link, dst_path, rcf, tag):
     if not link:
         return
     LOGGER.info(f'Cloning Done: {name}')
-    cmd1 = [bot_cache['pkgs'][3], 'lsf', '--fast-list', '-R',
+    cmd1 = ['rclone', 'lsf', '--fast-list', '-R',
             '--files-only', '--config', config_path, destination]
-    cmd2 = [bot_cache['pkgs'][3], 'lsf', '--fast-list', '-R',
+    cmd2 = ['rclone', 'lsf', '--fast-list', '-R',
             '--dirs-only', '--config', config_path, destination]
-    cmd3 = [bot_cache['pkgs'][3], 'size', '--fast-list', '--json',
+    cmd3 = ['rclone', 'size', '--fast-list', '--json',
             '--config', config_path, destination]
     res1, res2, res3 = await gather(cmd_exec(cmd1), cmd_exec(cmd2), cmd_exec(cmd3))
     if res1[2] != res2[2] != res3[2] != 0:
@@ -203,6 +204,7 @@ async def clone(client, message):
     drive_id   = args['-id']
     index_link = args['-index']
     gd_cat     = args['-c'] or args['-category']
+
     if username := message.from_user.username:
         tag = f"@{username}"
     else:
@@ -254,7 +256,7 @@ async def clone(client, message):
         return
 
     if is_rclone_path(link):
-        if not await aiopath.exists('wcl.conf') and not await aiopath.exists(f'wcl/{message.from_user.id}.conf'):
+        if not await aiopath.exists('rclone.conf') and not await aiopath.exists(f'rclone/{message.from_user.id}.conf'):
             await sendMessage(message, 'RClone Config Not exists!')
             await delete_links(message)
             return

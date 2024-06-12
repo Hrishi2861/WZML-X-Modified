@@ -31,7 +31,7 @@ class CustomFilters:
                 or (is_forum.reply_to_top_message_id in topic_ids)))):
                 auth_chat = True
         return auth_chat
-
+    
     authorized = create(authorized_user)
     
     async def authorized_usetting(self, _, message):
