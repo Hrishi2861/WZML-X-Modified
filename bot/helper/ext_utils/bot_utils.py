@@ -6,13 +6,13 @@ from os import path as ospath
 from pkg_resources import get_distribution, DistributionNotFound
 from aiofiles import open as aiopen
 from aiofiles.os import remove as aioremove, path as aiopath, mkdir
-from re import match as re_match
+from re import match as re_match, search as research
 from time import time
 from html import escape
 from uuid import uuid4
 from subprocess import run as srun
 from psutil import disk_usage, disk_io_counters, Process, cpu_percent, swap_memory, cpu_count, cpu_freq, getloadavg, virtual_memory, net_io_counters, boot_time
-from asyncio import create_subprocess_exec, create_subprocess_shell, run_coroutine_threadsafe, sleep
+from asyncio import create_subprocess_exec, create_subprocess_shell, run_coroutine_threadsafe, sleep, gather
 from asyncio.subprocess import PIPE
 from functools import partial, wraps
 from concurrent.futures import ThreadPoolExecutor
@@ -44,17 +44,18 @@ PAGE_NO      = 1
 
 
 class MirrorStatus:
-    STATUS_UPLOADING   = "Upload"
-    STATUS_DOWNLOADING = "Download"
-    STATUS_CLONING     = "Clone"
-    STATUS_QUEUEDL     = "QueueDL"
-    STATUS_QUEUEUP     = "QueueUp"
-    STATUS_PAUSED      = "Pause"
-    STATUS_ARCHIVING   = "Archive"
-    STATUS_EXTRACTING  = "Extract"
-    STATUS_SPLITTING   = "Split"
-    STATUS_CHECKING    = "CheckUp"
-    STATUS_SEEDING     = "Seed"
+    STATUS_UPLOADING   = "Upload 📤"
+    STATUS_DOWNLOADING = "Download 📥"
+    STATUS_CLONING     = "Clone 🔃"
+    STATUS_QUEUEDL     = "QueueDL ⏳"
+    STATUS_QUEUEUP     = "QueueUL ⏳"
+    STATUS_PAUSED      = "Paused ⛔️"
+    STATUS_ARCHIVING   = "Archive 🛠"
+    STATUS_METADATA    = "Metadata 📝"
+    STATUS_EXTRACTING  = "Extract 📂"
+    STATUS_SPLITTING   = "Split ✂️"
+    STATUS_CHECKING    = "CheckUp ⏱"
+    STATUS_SEEDING     = "Seed 🌧"
 
 
 class setInterval:
@@ -142,7 +143,6 @@ def get_progress_bar_string(pct):
     cFull = int(p // 10)
     p_str = '★' * cFull
     p_str += '☆' * (10 - cFull)
-    return f"[{p_str}]"
 
 
 def get_all_versions():
@@ -198,7 +198,7 @@ class EngineStatus:
 
 
 def get_readable_message():
-    msg = "<a href='https://t.me/jetmirror'>Pᴏᴡᴇʀᴇᴅ ʙʏ ᴊᴇᴛ-ᴍɪʀʀᴏʀ 🚀♥️</a>\n\n"
+    msg = "<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>\n"
     button = None
     STATUS_LIMIT = config_dict['STATUS_LIMIT']
     tasks = len(download_dict)
@@ -211,7 +211,7 @@ def get_readable_message():
             ChatType.SUPERGROUP, ChatType.CHANNEL] and not config_dict['DELETE_LINKS'] else ''
         elapsed = time() - download.message.date.timestamp()
         msg += BotTheme('STATUS_NAME', Name="Task is being Processed!" if config_dict['SAFE_MODE'] and elapsed >= config_dict['STATUS_UPDATE_INTERVAL'] else escape(f'{download.name()}'))
-        if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING]:
+        if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_METADATA]:
             msg += BotTheme('BAR', Bar=f"{get_progress_bar_string(download.progress())} {download.progress()}")
             msg += BotTheme('PROCESSED', Processed=f"{download.processed_bytes()} of {download.size()}")
             msg += BotTheme('STATUS', Status=download.status(), Url=msg_link)
@@ -494,6 +494,17 @@ async def compare_versions(v1, v2):
             return "More Updated! Kindly Contribute in Official"
     return "Already up to date with latest version"
 
+commands = {
+    "aria2": (["aria2c", "--version"], r"aria2 version ([\d.]+)"),
+    "qBittorrent": (["qbittorrent-nox", "--version"], r"qBittorrent v([\d.]+)"),
+    "python": (["python3", "--version"], r"Python ([\d.]+)"),
+    "rclone": (["rclone", "--version"], r"rclone v([\d.]+)"),
+    "yt-dlp": (["yt-dlp", "--version"], r"([\d.]+)"),
+    "ffmpeg": (["ffmpeg", "-version"], r"ffmpeg version ([\d.]+(-\w+)?).*"),
+    "7z": (["7z", "i"], r"7-Zip.*?([\d]+\.[\d]+)"),
+    "mega": (["pip3", "show", "megasdk"], r"Version:\s*([\d\.]+)"),
+    "pyrogram":(["pip3", "show", "pyrofork"], r"Version:\s*([\d\.]+)"),
+    "tgcrypto":(["pip3", "show", "tgcrypto"], r"Version:\s*([\d\.]+)")}
 
 async def get_stats(event, key="home"):
     user_id = event.from_user.id
@@ -505,7 +516,22 @@ async def get_stats(event, key="home"):
         btns.ibutton('OS Stats', f'wzmlx {user_id} stats stsys')
         btns.ibutton('Repo Stats', f'wzmlx {user_id} stats strepo')
         btns.ibutton('Bot Limits', f'wzmlx {user_id} stats botlimits')
+        btns.ibutton('Engine Info', f'wzmlx {user_id} stats info')
         msg = "⌬ <b><i>Bot & OS Statistics!</i></b>"
+    elif key == "info":
+        msg = BotTheme(
+            'ENG_INFO',
+            pyt = commands["python"],
+            ar = commands["aria2"],
+            qb = commands["qBittorrent"],
+            me = commands["mega"],
+            rcl = commands["rclone"],
+            yt = commands["yt-dlp"],
+            ff = commands["ffmpeg"],
+            zz = commands["7z"],
+            pgram = commands["pyrogram"],
+            tgcr = commands["tgcrypto"],
+        )
     elif key == "stbot":
         total, used, free, disk = disk_usage('/')
         swap = swap_memory()
@@ -584,7 +610,7 @@ async def get_stats(event, key="home"):
                 UT = ('∞' if (val := config_dict['USER_MAX_TASKS']) == '' else val),
                 BT = ('∞' if (val := config_dict['BOT_MAX_TASKS']) == '' else val),
         )
-    btns.ibutton('Close', f'wzmlx {user_id} close')
+    btns.ibutton('❌', f'wzmlx {user_id} close', position="footer")
     return msg, btns.build_menu(2)
 
 
@@ -658,7 +684,7 @@ async def checking_access(user_id, button=None):
         if button is None:
             button = ButtonMaker()
         encrypt_url = b64encode(f"{token}&&{user_id}".encode()).decode()
-        button.ubutton('Generate New Token', short_url(f'https://t.me/{bot_name}?start={encrypt_url}'))
+        button.ubutton('Generate New Token', short_url(f'https://redirect.jet-mirror.in/{bot_name}/{encrypt_url}'))
         return f'<i>Temporary Token has been expired,</i> Kindly generate a New Temp Token to start using bot Again.\n<b>Validity :</b> <code>{get_readable_time(config_dict["TOKEN_TIMEOUT"])}</code>', button
     return None, button
 
@@ -785,3 +811,29 @@ async def set_commands(client):
         LOGGER.info('Bot Commands have been Set & Updated')
     except Exception as err:
         LOGGER.error(err)
+
+async def get_version_async(command, regex):
+    try:
+        out, err, code = await cmd_exec(command)
+        if code != 0:
+            return f"Error: {err}"
+        match = research(regex, out)
+        return match.group(1) if match else "Version not found"
+    except Exception as e:
+        return f"Exception: {str(e)}"
+
+
+@new_task
+async def get_packages_version():
+    tasks = [get_version_async(command, regex) for command, regex in commands.values()]
+    versions = await gather(*tasks)
+    for tool, version in zip(commands.keys(), versions):
+        commands[tool] = version
+    if await aiopath.exists(".git"):
+        last_commit = await cmd_exec(
+            "git log -1 --date=short --pretty=format:'%cd <b>From</b> %cr'", True
+        )
+        last_commit = last_commit[0]
+    else:
+        last_commit = "No UPSTREAM_REPO"
+    commands["commit"] = last_commit

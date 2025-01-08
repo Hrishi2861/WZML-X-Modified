@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 from os import walk, path as ospath
 from aiofiles.os import remove as aioremove, path as aiopath, listdir, rmdir, makedirs
-from aioshutil import rmtree as aiormtree
+from aioshutil import rmtree as aiormtree, move
 from shutil import rmtree, disk_usage
 from magic import Magic
 from re import split as re_split, I, search as re_search
 from subprocess import run as srun
 from sys import exit as sexit
-
+from asyncio import create_subprocess_exec
+from asyncio.subprocess import PIPE
 from .exceptions import NotSupportedExtractionArchive
-from bot import aria2, LOGGER, DOWNLOAD_DIR, get_client, GLOBAL_EXTENSION_FILTER
+from bot import aria2, LOGGER, DOWNLOAD_DIR, get_client, GLOBAL_EXTENSION_FILTER, bot_cache
 from bot.helper.ext_utils.bot_utils import sync_to_async, cmd_exec
 
 ARCH_EXT = [".tar.bz2", ".tar.gz", ".bz2", ".gz", ".tar.xz", ".tar", ".tbz2", ".tgz", ".lzma2",
@@ -175,3 +176,18 @@ async def join_files(path):
             for file_ in files:
                 if re_search(fr"{res}\.0[0-9]+$", file_):
                     await aioremove(f'{path}/{file_}')
+
+async def edit_metadata(listener, base_dir: str, media_file: str, outfile: str, metadata: str = ''):
+    cmd = [bot_cache['pkgs'][2], '-hide_banner', '-loglevel', 'error', '-ignore_unknown', '-i', media_file, '-metadata', f'title={metadata}',
+           '-metadata:s:v', f'title={metadata}', '-metadata', 'Comment=', '-metadata', 'Copyright=', '-metadata', f'AUTHOR=Lord Puneet 👑', '-metadata', 'Encoded by=', '-metadata', 'SYNOPSIS=', '-metadata', 'ARTIST=', '-metadata', 'PURL=', '-metadata', 'Encoded_by=', '-metadata', 'Description=', '-metadata', 'description=', '-metadata', 'SUMMARY=', '-metadata', 'WEBSITE=', '-metadata:s:a', f'title={metadata}',
+           '-metadata:s:s', f'title={metadata}', '-map', '0:v:0?', '-map', '0:a:?', '-map', '0:s:?', '-c:v', 'copy', '-c:a', 'copy', '-c:s',
+           'copy', outfile, '-y']
+    listener.suproc = await create_subprocess_exec(*cmd, stderr=PIPE)
+    code = await listener.suproc.wait()
+    if code == 0:
+        listener.seed = False
+        await clean_target(media_file)
+        await move(outfile, base_dir)
+    else:
+        await clean_target(outfile)
+        LOGGER.error('%s. Changing metadata failed, Path %s', (await listener.suproc.stderr.read()).decode(), media_file)

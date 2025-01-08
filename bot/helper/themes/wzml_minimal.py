@@ -6,10 +6,10 @@ class WZMLStyle:
     ST_BN1_URL = 'https://t.me/hrishikesh2861'
     ST_BN2_NAME = '🚀 Updates 🚀'
     ST_BN2_URL = 'https://t.me/JetMirror'
-    ST_MSG = '''<i>This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. Repo used is WZML-X. And done some Modifications ❤️.</i>
+    ST_MSG = '''This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. Repo used is WZML-X. And done some Modifications ❤️.
 <b>Type {help_command} to get a list of available commands</b>'''
-    ST_BOTPM = '''<i>Now, This bot will send all your files and links here. Start Using ...</i>'''
-    ST_UNAUTH = '''<i>You Are not authorized user! Deploy your own WZML-X Mirror-Leech bot</i>'''
+    ST_BOTPM = '''Now, This bot will send all your files and links here. Start Using in <b><u>@JetMirror</u></b> ...'''
+    ST_UNAUTH = '''You Are not authorized user!\n<b>Deploy your own WZML-X Mirror-Leech bot</b>'''
     OWN_TOKEN_GENERATE = '''<b>Temporary Token is not yours!</b>\n\n<i>Kindly generate your own.</i>'''
     USED_TOKEN = '''<b>Temporary Token already used!</b>\n\n<i>Kindly generate a new one.</i>'''
     LOGGED_PASSWORD = '''<b>Bot Already Logged In via Password</b>\n\n<i>No Need to Accept Temp Tokens.</i>'''
@@ -40,6 +40,27 @@ class WZMLStyle:
     HELP_HEADER = "㊂ <b><i>Help Guide Menu!</i></b>\n\n<b>NOTE: <i>Click on any CMD to see more minor detalis.</i></b>"
 
     # async def stats(client, message):
+
+    ENG_INFO = ''' <b><i><u>🚀Jet Bot Engine Info</u></i></b>
+
+┎ <b> 🐍 Main Dependencies :
+┠ <b>Python3:</b> {pyt}
+┠ <b>Pyrogram:</b> {pgram}
+┖ <b>TgCrypto:</b> {tgcr}
+
+┎ <b> ❄️ Required Dependencies :
+┠ <b>Aria2:</b> {ar}
+┠ <b>qBittorrent:</b> {qb}
+┠ <b>Yt-Dlp:</b> {yt}
+┠ <b>FFmpeg:</b> {ff}
+┠ <b>7z:</b> {zz}
+┠ <b>Mega:</b> {me}
+┖ <b>Rclone:</b> {rcl}
+
+<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
+
+    '''
+
     BOT_STATS = ''' <b><i><u>🚀Jet Bot Statistics</u></i></b>
 ┖ <b>Bot Uptime :</b> {bot_uptime}
 
@@ -173,7 +194,7 @@ class WZMLStyle:
     INDEX_LINK_F =    '🗂 Index Link'
     INDEX_LINK_D =    '⚡ Index Link'
     VIEW_LINK =       '🌐 View Link'
-    CHECK_PM =        '📥 View in Bot PM'
+    CHECK_PM =        '📥 View in Inbox'
     CHECK_LL =        '🖇 View in Links Log'
     MEDIAINFO_LINK =  '📃 MediaInfo'
     SCREENSHOTS =     '🖼 ScreenShots'
@@ -222,7 +243,7 @@ class WZMLStyle:
     Ram = '\n┠ <b>RAM:</b> {ram}% | '
     uptime =                     '<b>UPTIME:</b> {uptime}'
     DL = '\n┖ <b>DL:</b> {DL}/s | '
-    UL =                        '<b>UL:</b> {UL}/s\n\n<a href="https://t.me/JetMirror">𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>'
+    UL =                        '<b>UL:</b> {UL}/s'
 
     ###--------BUTTONS-------
     PREVIOUS = '⫷'
@@ -251,7 +272,7 @@ class WZMLStyle:
     # ---------------------
 
     # async def mirror_status(_, message): ----> status.py
-    NO_ACTIVE_DL = '''<i>No Active Downloads!</i>
+    NO_ACTIVE_DL = '''<b>ᴜɴɪɴsᴛᴀʟʟ ᴛᴇʟᴇɢʀᴀᴍ ᴀɴᴅ ᴇɴᴊᴏʏ ʏᴏᴜʀ ʟɪғᴇ!!</b>\n\nɴᴏ ᴅᴏᴡɴʟᴏᴀᴅs ᴀʀᴇ ᴄᴜʀʀᴇɴᴛʟʏ ɪɴ ᴘʀᴏɢʀᴇss.
     
 ⌬ <b><i>Bot Stats</i></b>
 ┠ <b>CPU:</b> {cpu}% | <b>F:</b> {free} [{free_p}%]
