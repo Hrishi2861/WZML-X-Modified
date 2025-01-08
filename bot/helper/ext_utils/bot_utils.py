@@ -143,6 +143,7 @@ def get_progress_bar_string(pct):
     cFull = int(p // 10)
     p_str = '★' * cFull
     p_str += '☆' * (10 - cFull)
+    return f"[{p_str}]"
 
 
 def get_all_versions():
