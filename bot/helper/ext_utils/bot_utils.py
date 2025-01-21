@@ -33,7 +33,7 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.ext_utils.telegraph_helper import telegraph
 from bot.helper.ext_utils.shortners import short_url
-from quoters import Quote
+
 
 THREADPOOL   = ThreadPoolExecutor(max_workers=1000)
 MAGNET_REGEX = r'magnet:\?xt=urn:(btih|btmh):[a-zA-Z0-9]*\s*'
@@ -43,7 +43,6 @@ STATUS_START = 0
 PAGES        = 1
 PAGE_NO      = 1
 
-quote = Quote.print().split('―', 1)[0].strip().replace("“", "").replace("”", "")
 
 class MirrorStatus:
     STATUS_UPLOADING   = "Upload 📤"
@@ -201,7 +200,6 @@ class EngineStatus:
 
 
 def get_readable_message():
-    # msg = f'<b>{quote} ❤️</b>\n\n'
     msg = "<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>\n"
     button = None
     STATUS_LIMIT = config_dict['STATUS_LIMIT']
