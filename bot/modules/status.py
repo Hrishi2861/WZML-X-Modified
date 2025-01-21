@@ -5,7 +5,6 @@ from psutil import cpu_percent, virtual_memory, disk_usage
 from time import time
 from asyncio import sleep
 import asyncio
-from quoters import Quote
 from bot import bot_cache, status_reply_dict_lock, download_dict, download_dict_lock, botStartTime, Interval, config_dict, bot
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.bot_commands import BotCommands
@@ -21,12 +20,10 @@ async def mirror_status(_, message):
     await sticker_message.delete()
     async with download_dict_lock:
         count = len(download_dict)
-    quote = Quote.print().split('―', 1)[0].strip().replace("“", "").replace("”", "")
     if count == 0:
         currentTime = get_readable_time(time() - botStartTime)
         free = get_readable_file_size(disk_usage(config_dict['DOWNLOAD_DIR']).free)
-        msg = f'<b>{quote} ❤️</b>\n\n'
-        msg += f"<b><a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a></b>\n\n"
+        msg = f"<b><a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a></b>\n\n"
         msg += BotTheme('NO_ACTIVE_DL', cpu=cpu_percent(), free=free, free_p=round(100-disk_usage(config_dict['DOWNLOAD_DIR']).percent, 1),
                        ram=virtual_memory().percent, uptime=currentTime)
         reply_message = await sendMessage(message, msg)

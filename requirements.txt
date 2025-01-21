@@ -34,7 +34,6 @@ git+https://github.com/Hrishi2861/pyrofork-2.2.11-peer-fix
 python-dotenv
 python-magic
 pytz
-quoters
 qbittorrent-api
 requests
 speedtest-cli
