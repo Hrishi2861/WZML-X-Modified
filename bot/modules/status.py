@@ -21,7 +21,7 @@ async def mirror_status(_, message):
     await sticker_message.delete()
     async with download_dict_lock:
         count = len(download_dict)
-    quote = Quote.print().split('―', 1)[0].strip().replace("“", "").replace("”", "")
+    # quote = Quote.print().split('―', 1)[0].strip().replace("“", "").replace("”", "")
     if count == 0:
         currentTime = get_readable_time(time() - botStartTime)
         free = get_readable_file_size(disk_usage(config_dict['DOWNLOAD_DIR']).free)
