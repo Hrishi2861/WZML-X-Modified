@@ -43,8 +43,6 @@ class Config:
     INCOMPLETE_TASK_NOTIFIER = False
     INDEX_URL = ""
     IS_TEAM_DRIVE = False
-    JD_EMAIL = ""
-    JD_PASS = ""
     MEGA_EMAIL = ""
     MEGA_PASSWORD = ""
     DIRECT_LIMIT = 0
@@ -53,8 +51,6 @@ class Config:
     GD_DL_LIMIT = 0
     RC_DL_LIMIT = 0
     CLONE_LIMIT = 0
-    JD_LIMIT = 0
-    NZB_LIMIT = 0
     YTDLP_LIMIT = 0
     PLAYLIST_LIMIT = 0
     LEECH_LIMIT = 0
@@ -255,4 +251,3 @@ class BinConfig:
     QBIT_NAME = "stormtorrent"
     FFMPEG_NAME = "mediaforge"
     RCLONE_NAME = "ghostdrive"
-    SABNZBD_NAME = "newsripper"

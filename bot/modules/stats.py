@@ -41,10 +41,6 @@ from ..version import get_version
 commands = {
     "aria2": ([BinConfig.ARIA2_NAME, "--version"], r"aria2 version ([\d.]+)"),
     "qBittorrent": ([BinConfig.QBIT_NAME, "--version"], r"qBittorrent v([\d.]+)"),
-    "SABnzbd+": (
-        [BinConfig.SABNZBD_NAME, "--version"],
-        rf"{BinConfig.SABNZBD_NAME}-([\d.]+)",
-    ),
     "python": (["python3", "--version"], r"Python ([\d.]+)"),
     "rclone": ([BinConfig.RCLONE_NAME, "--version"], r"rclone v([\d.]+)"),
     "yt-dlp": (["yt-dlp", "--version"], r"([\d.]+)"),
@@ -152,7 +148,6 @@ async def get_stats(event, key="home"):
 ┟ <b>python:</b> {ver.get("python", "N/A")}
 ┠ <b>aria2:</b> {ver.get("aria2", "N/A")}
 ┠ <b>qBittorrent:</b> {ver.get("qBittorrent", "N/A")}
-┠ <b>SABnzbd+:</b> {ver.get("SABnzbd+", "N/A")}
 ┠ <b>rclone:</b> {ver.get("rclone", "N/A")}
 ┠ <b>yt-dlp:</b> {ver.get("yt-dlp", "N/A")}
 ┠ <b>ffmpeg:</b> {ver.get("ffmpeg", "N/A")}
@@ -170,8 +165,6 @@ async def get_stats(event, key="home"):
 ┠ <b>GDriveDL Limit :</b> {Config.GD_DL_LIMIT or "∞"} GB
 ┠ <b>RCloneDL Limit :</b> {Config.RC_DL_LIMIT or "∞"} GB
 ┠ <b>Clone Limit :</b> {Config.CLONE_LIMIT or "∞"} GB
-┠ <b>JDown Limit :</b> {Config.JD_LIMIT or "∞"} GB
-┠ <b>NZB Limit :</b> {Config.NZB_LIMIT or "∞"} GB
 ┠ <b>YT-DLP Limit :</b> {Config.YTDLP_LIMIT or "∞"} GB
 ┠ <b>Playlist Limit :</b> {Config.PLAYLIST_LIMIT or "∞"}
 ┠ <b>Mega Limit :</b> {Config.MEGA_LIMIT or "∞"} GB

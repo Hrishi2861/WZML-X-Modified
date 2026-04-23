@@ -103,8 +103,6 @@ class TaskConfig:
         self.is_yt = False
         self.is_qbit = False
         self.is_mega = False
-        self.is_nzb = False
-        self.is_jd = False
         self.is_clone = False
         self.is_uphoster = False
         self.is_gdrive = False
@@ -171,7 +169,7 @@ class TaskConfig:
         self.is_gdrive = is_gdrive_link(self.source_url) if self.source_url else False
         self.is_mega = is_mega_link(self.link) if self.source_url else False
 
-        in_mode = f"#{'Mega' if self.is_mega else 'qBit' if self.is_qbit else 'SABnzbd' if self.is_nzb else 'JDown' if self.is_jd else 'RCloneDL' if self.is_rclone else 'ytdlp' if self.is_ytdlp else 'GDrive' if (self.is_clone or self.is_gdrive) else 'Aria2' if (self.source_url and self.source_url != self.message.link) else 'TgMedia'}"
+        in_mode = f"#{'Mega' if self.is_mega else 'qBit' if self.is_qbit else 'RCloneDL' if self.is_rclone else 'ytdlp' if self.is_ytdlp else 'GDrive' if (self.is_clone or self.is_gdrive) else 'Aria2' if (self.source_url and self.source_url != self.message.link) else 'TgMedia'}"
 
         self.mode = (in_mode, out_mode)
 
@@ -229,27 +227,14 @@ class TaskConfig:
                 self.rc_flags = self.user_dict["RCLONE_FLAGS"]
             elif "RCLONE_FLAGS" not in self.user_dict and Config.RCLONE_FLAGS:
                 self.rc_flags = Config.RCLONE_FLAGS
-        if self.link not in ["rcl", "gdl"]:
-            if not self.is_jd:
-                if is_rclone_path(self.link):
-                    if not self.link.startswith("mrcc:") and self.user_dict.get(
-                        "USER_TOKENS", False
-                    ):
-                        self.link = f"mrcc:{self.link}"
-                    await self.is_token_exists(self.link, "dl")
-                elif is_gdrive_link(self.link):
-                    if not self.link.startswith(
-                        ("mtp:", "tp:", "sa:")
-                    ) and self.user_dict.get("USER_TOKENS", False):
-                        self.link = f"mtp:{self.link}"
-                    await self.is_token_exists(self.link, "dl")
-        elif self.link == "rcl":
-            if not self.is_ytdlp and not self.is_jd:
+        
+        if self.link == "rcl":
+            if not self.is_ytdlp:
                 self.link = await RcloneList(self).get_rclone_path("rcd")
                 if not is_rclone_path(self.link):
                     raise ValueError(self.link)
         elif self.link == "gdl":
-            if not self.is_ytdlp and not self.is_jd:
+            if not self.is_ytdlp:
                 self.link = await GoogleDriveList(self).get_target_id("gdd")
                 if not is_gdrive_id(self.link):
                     raise ValueError(self.link)
@@ -621,8 +606,6 @@ class TaskConfig:
             message=nextmsg,
             is_qbit=self.is_qbit,
             is_leech=self.is_leech,
-            is_jd=self.is_jd,
-            is_nzb=self.is_nzb,
             is_uphoster=self.is_uphoster,
             same_dir=self.same_dir,
             bulk=self.bulk,
@@ -665,8 +648,6 @@ class TaskConfig:
                 message=nextmsg,
                 is_qbit=self.is_qbit,
                 is_leech=self.is_leech,
-                is_jd=self.is_jd,
-                is_nzb=self.is_nzb,
                 is_uphoster=self.is_uphoster,
                 same_dir=self.same_dir,
                 bulk=self.bulk,

@@ -33,9 +33,7 @@ from ..helper.mirror_leech_utils.download_utils.direct_link_generator import (
     direct_link_generator,
 )
 from ..helper.mirror_leech_utils.download_utils.gd_download import add_gd_download
-from ..helper.mirror_leech_utils.download_utils.jd_download import add_jd_download
 from ..helper.mirror_leech_utils.download_utils.mega_download import add_mega_download
-from ..helper.mirror_leech_utils.download_utils.nzb_downloader import add_nzb
 from ..helper.mirror_leech_utils.download_utils.qbit_download import add_qb_torrent
 from ..helper.mirror_leech_utils.download_utils.rclone_download import (
     add_rclone_download,
@@ -322,7 +320,7 @@ class Uphoster(TaskListener):
                     reply_to = None
             elif reply_to.document and (
                 file_.mime_type == "application/x-bittorrent"
-                or file_.file_name.endswith((".torrent", ".dlc", ".nzb"))
+                or file_.file_name.endswith((".torrent", ".dlc"))
             ):
                 self.link = await reply_to.download()
                 file_ = None
@@ -362,9 +360,7 @@ class Uphoster(TaskListener):
         self._set_mode_engine()
 
         if (
-            not self.is_jd
-            and not self.is_nzb
-            and not self.is_qbit
+            not self.is_qbit
             and not is_magnet(self.link)
             and not is_rclone_path(self.link)
             and not is_gdrive_link(self.link)
@@ -404,12 +400,8 @@ class Uphoster(TaskListener):
             )
         elif isinstance(self.link, dict):
             await add_direct_download(self, path)
-        elif self.is_jd:
-            await add_jd_download(self, path)
         elif self.is_qbit:
             await add_qb_torrent(self, path, ratio, seed_time)
-        elif self.is_nzb:
-            await add_nzb(self, path)
         elif is_rclone_path(self.link):
             await add_rclone_download(self, f"{path}/")
         elif is_gdrive_link(self.link) or is_gdrive_id(self.link):

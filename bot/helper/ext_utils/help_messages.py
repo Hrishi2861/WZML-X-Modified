@@ -315,7 +315,7 @@ MIRROR_HELP_DICT = {
     "DL-Auth": "<b>Direct link authorization</b>: -au -ap\n\n/cmd link -au username -ap password",
     "Headers": "<b>Direct link custom headers</b>: -h\n\n/cmd link -h key: value key1: value1",
     "Extract/Zip": extract_zip,
-    "Select-Files": "<b>Bittorrent/JDownloader/Sabnzbd File Selection</b>: -s\n\n/cmd link -s or by replying to file/link",
+    "Select-Files": "<b>Bittorrent File Selection</b>: -s\n\n/cmd link -s or by replying to file/link",
     "Torrent-Seed": seed,
     "Multi-Link": multi_link,
     "Same-Directory": same_dir,
@@ -451,10 +451,6 @@ def get_help_string():
             help_lines.append(f"{cmd_str}: Start mirroring to cloud.")
         elif key == "QbMirror":
             help_lines.append(f"{cmd_str}: Start Mirroring to cloud using qBittorrent.")
-        elif key == "JdMirror":
-            help_lines.append(f"{cmd_str}: Start Mirroring to cloud using JDownloader.")
-        elif key == "NzbMirror":
-            help_lines.append(f"{cmd_str}: Start Mirroring to cloud using Sabnzbd.")
         elif key == "Ytdl":
             help_lines.append(f"{cmd_str}: Mirror yt-dlp supported link.")
         elif key == "UpHoster":
@@ -463,10 +459,6 @@ def get_help_string():
             help_lines.append(f"{cmd_str}: Start leeching to Telegram.")
         elif key == "QbLeech":
             help_lines.append(f"{cmd_str}: Start leeching using qBittorrent.")
-        elif key == "JdLeech":
-            help_lines.append(f"{cmd_str}: Start leeching using JDownloader.")
-        elif key == "NzbLeech":
-            help_lines.append(f"{cmd_str}: Start leeching using Sabnzbd.")
         elif key == "YtdlLeech":
             help_lines.append(f"{cmd_str}: Leech yt-dlp supported link.")
         elif key == "Clone":

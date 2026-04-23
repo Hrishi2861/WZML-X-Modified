@@ -23,10 +23,7 @@ from .. import (
     drives_names,
     index_urls,
     intervals,
-    jd_listener_lock,
-    nzb_options,
     qbit_options,
-    sabnzbd_client,
     task_dict,
     shortener_dict,
     excluded_extensions,
@@ -42,7 +39,6 @@ from ..core.tg_client import TgClient
 from ..core.torrent_manager import TorrentManager
 from ..core.startup import update_qb_options, update_nzb_options, update_variables
 from ..helper.ext_utils.db_handler import database
-from ..core.jdownloader_booter import jdownloader
 from ..helper.ext_utils.task_manager import start_from_queued
 from ..helper.mirror_leech_utils.rclone_utils.serve import rclone_serve_booter
 from ..helper.telegram_helper.button_build import ButtonMaker
@@ -81,8 +77,6 @@ async def get_buttons(key=None, edit_type=None, edit_mode=False):
         buttons.data_button("Private Files", "botset private open")
         buttons.data_button("Qbit Settings", "botset qbit")
         buttons.data_button("Aria2c Settings", "botset aria")
-        buttons.data_button("Sabnzbd Settings", "botset nzb")
-        buttons.data_button("JDownloader Sync", "botset syncjd")
         buttons.data_button("Close", "botset close")
         msg = "Bot Settings:"
     elif edit_type is not None:
@@ -381,8 +375,6 @@ async def edit_variable(_, message, pre_message, key):
         "RCLONE_SERVE_PASS",
     ]:
         await rclone_serve_booter()
-    elif key in ["JD_EMAIL", "JD_PASS"]:
-        await jdownloader.boot()
     elif key == "RSS_DELAY":
         add_job()
     elif key == "USET_SERVERS":
@@ -481,20 +473,6 @@ async def edit_nzb_server(_, message, pre_message, key, index=0):
         await update_buttons(pre_message, f"nzbser{index}")
     await delete_message(message)
     await database.update_config({"USENET_SERVERS": Config.USENET_SERVERS})
-
-
-async def sync_jdownloader():
-    async with jd_listener_lock:
-        if not Config.DATABASE_URL or not jdownloader.is_connected:
-            return
-        await jdownloader.device.system.exit_jd()
-    if await aiopath.exists("cfg.zip"):
-        await remove("cfg.zip")
-    await (
-        await create_subprocess_exec("7z", "a", "cfg.zip", "/JDownloader/cfg")
-    ).wait()
-    await database.update_private_file("cfg.zip")
-
 
 @new_task
 async def update_private_file(_, message, pre_message, key, new_file=False):
@@ -635,25 +613,7 @@ async def edit_bot_settings(client, query):
         await query.answer()
         globals()["start"] = 0
         await update_buttons(message, None)
-    elif data[1] == "syncjd":
-        if not Config.JD_EMAIL or not Config.JD_PASS:
-            await query.answer(
-                "No Email or Password provided!",
-                show_alert=True,
-            )
-            return
-        await query.answer(
-            "Syncronization Started. JDownloader will get restarted. It takes up to 10 sec!",
-            show_alert=True,
-        )
-        await sync_jdownloader()
-    elif data[1] in ["var", "aria", "qbit", "nzb", "nzbserver"] or data[1].startswith(
-        "nzbser"
-    ):
-        if data[1] == "nzbserver":
-            globals()["start"] = 0
-        await query.answer()
-        await update_buttons(message, data[1])
+
     elif data[1] == "resetvar":
         await query.answer()
         value = ""
@@ -698,8 +658,6 @@ async def edit_bot_settings(client, query):
                 index_urls[0] = ""
         elif data[2] == "INCOMPLETE_TASK_NOTIFIER":
             await database.trunc_table("tasks")
-        elif data[2] in ["JD_EMAIL", "JD_PASS"]:
-            await create_subprocess_exec("pkill", "-9", "-f", "java")
         elif data[2] == "USENET_SERVERS":
             for s in Config.USENET_SERVERS:
                 await sabnzbd_client.delete_config("servers", s["name"])

@@ -221,7 +221,7 @@ class TaskListener(TaskConfig):
         if self.join and not self.is_file:
             await join_files(up_path)
 
-        if self.extract and not self.is_nzb:
+        if self.extract:
             up_path = await self.proceed_extract(up_path, gid)
             if self.is_cancelled:
                 return

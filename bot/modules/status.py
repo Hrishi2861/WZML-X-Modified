@@ -10,11 +10,9 @@ from .. import (
     task_dict,
     bot_start_time,
     intervals,
-    sabnzbd_client,
     DOWNLOAD_DIR,
 )
 from ..core.torrent_manager import TorrentManager
-from ..core.jdownloader_booter import jdownloader
 from ..helper.ext_utils.bot_utils import new_task
 from ..helper.ext_utils.status_utils import (
     EngineStatus,
@@ -139,25 +137,6 @@ async def status_pages(_, query):
             for _, __, eng in status_results
         ):
             dl_speed, seed_speed = await TorrentManager.overall_speed()
-
-        if any(eng == eng_status.STATUS_SABNZBD for _, __, eng in status_results):
-            if sabnzbd_client.LOGGED_IN:
-                dl_speed += (
-                    int(
-                        float(
-                            (await sabnzbd_client.get_downloads())["queue"].get(
-                                "kbpersec", "0"
-                            )
-                        )
-                    )
-                    * 1024
-                )
-
-        if any(eng == eng_status.STATUS_JD for _, __, eng in status_results):
-            if jdownloader.is_connected:
-                dl_speed += (
-                    await jdownloader.device.downloadcontroller.get_speed_in_bytes()
-                )
 
         for status, speed, _ in status_results:
             match status:
