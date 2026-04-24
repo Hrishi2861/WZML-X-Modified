@@ -55,7 +55,7 @@ commands = {
     "mega": (["mega-version"], r"version: ([\d.]+)"),
 }
 
-jet="/home/hrishi/Downloads/Jet.jpg"
+jet="/usr/src/app/Jet.jpg"
 async def get_stats(event, key="home"):
     user_id = event.from_user.id
     btns = ButtonMaker()
