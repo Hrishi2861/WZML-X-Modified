@@ -193,14 +193,14 @@ def speed_string_to_bytes(size_text: str):
 def get_progress_bar_string(pct):
     pct = float(str(pct).strip("%"))
     p = min(max(pct, 0), 100)
-    cFull = int(p // 8)
-    p_str = "⬢" * cFull
-    p_str += "⬡" * (12 - cFull)
+    cFull = int(p // 10)
+    p_str = "★" * cFull
+    p_str += "☆" * (10 - cFull)
     return f"[{p_str}]"
 
 
 async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=1):
-    msg = "<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>\n"
+    msg = "<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>\n\n"
     button = None
 
     tasks = await get_specific_tasks(status, sid if is_user else None)
