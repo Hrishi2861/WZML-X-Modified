@@ -2,7 +2,7 @@ from html import escape
 from time import monotonic, time
 from uuid import uuid4
 from re import match
-
+import asyncio
 from aiofiles import open as aiopen
 from cloudscraper import create_scraper
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -30,12 +30,16 @@ from ..helper.telegram_helper.message_utils import (
 @new_task
 async def start(_, message):
     userid = message.from_user.id
+    sticker_message = await message.reply_sticker("CAACAgIAAxkBAAEarGtmq8a_Hy6_Pk8IzUHRO8i1dvwDyAACFh4AAuzxOUkNYHq7o3u0ODUE")
+    await asyncio.sleep(2)
+    await sticker_message.delete()
+    jet="/usr/src/app/Jet.jpg"
     lang = Language()
     buttons = ButtonMaker()
     buttons.url_button(
-        lang.START_BUTTON1, "https://www.github.com/SilentDemonSD/WZML-X"
+        lang.START_BUTTON1, "https://www.github.com/hrishi2861/WZML-X-Modified"
     )
-    buttons.url_button(lang.START_BUTTON2, "https://t.me/WZML_X")
+    buttons.url_button(lang.START_BUTTON2, "https://t.me/JetMirror")
     reply_markup = buttons.build_menu(2)
 
     if len(message.command) > 1 and message.command[1] == "wzmlx":
@@ -89,7 +93,7 @@ async def start(_, message):
         start_string = lang.START_MSG.format(
             cmd=BotCommands.HelpCommand[0],
         )
-        await send_message(message, start_string, reply_markup)
+        await send_message(message, start_string, reply_markup,photo=jet)
     elif Config.BOT_PM:
         await send_message(
             message,

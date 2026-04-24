@@ -73,7 +73,7 @@ async def get_stats(event, key="home"):
         swap = swap_memory()
         memory = virtual_memory()
         disk_io = disk_io_counters()
-        msg = f"""⌬ <b><i>BOT STATISTICS :</i></b>
+        msg = f"""⌬ <b><i><u>🚀Jet Bot Statistics :</u></i></b>
 ┖ <b>Bot Uptime :</b> {get_readable_time(time() - bot_start_time)}
 
 ┎ <b><i>RAM ( MEMORY ) :</i></b>
@@ -89,10 +89,12 @@ async def get_stats(event, key="home"):
 ┃ <b>Total Disk Read :</b> {f"{get_readable_file_size(disk_io.read_bytes)} ({get_readable_time(disk_io.read_time / 1000)})" if disk_io else "Access Denied"}
 ┃ <b>Total Disk Write :</b> {f"{get_readable_file_size(disk_io.write_bytes)} ({get_readable_time(disk_io.write_time / 1000)})" if disk_io else "Access Denied"}
 ┖ <b>U :</b> {get_readable_file_size(used)} | <b>F :</b> {get_readable_file_size(free)} | <b>T :</b> {get_readable_file_size(total)}
+
+<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
 """
     elif key == "stsys":
         cpu_usage = cpu_percent(interval=0.5)
-        msg = f"""⌬ <b><i>OS SYSTEM :</i></b>
+        msg = f"""⌬ <b><i>🚀Jet System Statistics :</i></b>
 ┟ <b>OS Uptime :</b> {get_readable_time(time() - boot_time())}
 ┠ <b>OS Version :</b> {version()}
 ┖ <b>OS Arch :</b> {platform()}
@@ -111,6 +113,8 @@ async def get_stats(event, key="home"):
 ┠ <b>P-Core(s) :</b> {cpu_count(logical=False)} | <b>V-Core(s) :</b> {cpu_count(logical=True) - cpu_count(logical=False)}
 ┠ <b>Total Core(s) :</b> {cpu_count(logical=True)}
 ┖ <b>Usable CPU(s) :</b> {len(Process().cpu_affinity())}
+
+<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
 """
     elif key == "strepo":
         last_commit, changelog = "No Data", "N/A"
@@ -140,10 +144,12 @@ async def get_stats(event, key="home"):
 ┖ <b>Last ChangeLog :</b> {changelog}
 
 ⌬ <b>REMARKS :</b> <code>{compare_versions(get_version(), official_v)}</code>
+
+<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     """
     elif key == "stpkgs":
         ver = bot_cache.get("eng_versions", {})
-        msg = f"""⌬ <b><i>Packages Statistics :</i></b>
+        msg = f"""⌬ <b><i>🚀Jet Packages Statistics :</i></b>
 │
 ┟ <b>python:</b> {ver.get("python", "N/A")}
 ┠ <b>aria2:</b> {ver.get("aria2", "N/A")}
@@ -156,9 +162,11 @@ async def get_stats(event, key="home"):
 ┠ <b>PyroTgFork:</b> {ver.get("pyrotgfork", "N/A")}
 ┠ <b>Google API:</b> {ver.get("gapi", "N/A")}
 ┖ <b>Mega CMD:</b> {ver.get("mega", "N/A")}
+
+<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
 """
     elif key == "tlimits":
-        msg = f"""⌬ <b><i>Bot Task Limits :</i></b>
+        msg = f"""⌬ <b><i>🚀Jet Bot Task Limits :</i></b>
 │
 ┟ <b>Direct Limit :</b> {Config.DIRECT_LIMIT or "∞"} GB
 ┠ <b>Torrent Limit :</b> {Config.TORRENT_LIMIT or "∞"} GB
@@ -177,6 +185,8 @@ async def get_stats(event, key="home"):
 ┠ <b>User Time Limit :</b> {Config.USER_TIME_INTERVAL or "0"}s / task
 ┠ <b>User Max Tasks :</b> {Config.USER_MAX_TASKS or "∞"}
 ┖ <b>Bot Max Tasks :</b> {Config.BOT_MAX_TASKS or "∞"}
+
+<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>
     """
 
     elif key == "systasks":
@@ -202,7 +212,7 @@ async def get_stats(event, key="home"):
         except Exception:
             processes = []
 
-        msg = "⌬ <b><i>System Tasks (High Usage)</i></b>\n│\n"
+        msg = "⌬ <b><i>🚀Jet System Tasks (High Usage)</i></b>\n│\n"
 
         if processes:
             for i, proc in enumerate(processes, 1):
@@ -212,9 +222,9 @@ async def get_stats(event, key="home"):
                 user = proc.get("username", "Unknown")[:10]
                 msg += f"┠ <b>{i:2d}.</b> <code>{name}</code>\n┃    🔹 <b>CPU:</b> {cpu:.1f}% | <b>MEM:</b> {mem:.1f}%\n┃    👤 <b>User:</b> {user} | <b>PID:</b> {proc['pid']}\n"
                 btns.data_button(f"{i}", f"stats {user_id} killproc {proc['pid']}")
-            msg += "┃\n┖ <i>Click serial number to terminate process</i>"
+            msg += "┃\n┖ <i>Click serial number to terminate process</i>\n\n<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>"
         else:
-            msg += "┃\n┖ <i>No high usage processes found</i>"
+            msg += "┃\n┖ <i>No high usage processes found</i>\n\n<a href='https://t.me/JetMirror'>𝑩𝒐𝒕 𝒃𝒚 🚀 𝑱𝒆𝒕-𝑴𝒊𝒓𝒓𝒐𝒓</a>"
 
         btns.data_button("🔄 Refresh", f"stats {user_id} systasks", "header")
 
