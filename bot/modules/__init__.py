@@ -48,7 +48,6 @@ __all__ = [
     "clone_node",
     "aioexecute",
     "execute",
-    "hydra_search",
     "clear",
     "select",
     "confirm_selection",
