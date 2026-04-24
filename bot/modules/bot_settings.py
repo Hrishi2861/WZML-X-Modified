@@ -112,6 +112,7 @@ async def get_buttons(key=None, edit_type=None, edit_mode=False):
             buttons.data_button("Empty String", f"botset emptyqbit {key}")
             buttons.data_button("Close", "botset close")
             msg = f"Send a valid value for {key}. Current value is '{qbit_options[key]}'. Timeout: 60 sec"
+        
     elif key == "var":
         conf_dict = Config.get_all()
         for k in list(conf_dict.keys())[start : 10 + start]:
@@ -193,7 +194,7 @@ async def get_buttons(key=None, edit_type=None, edit_mode=False):
                 f"{int(x / 10)}", f"botset start qbit {x}", position="footer"
             )
         msg = f"Qbittorrent Options | Page: {int(start / 10)} | State: {state}"
-    
+
     return msg, buttons.build_menu(1 if key is None else 2)
 
 
@@ -487,7 +488,9 @@ async def edit_bot_settings(client, query):
         await query.answer()
         globals()["start"] = 0
         await update_buttons(message, None)
-
+    elif data[1] in ["var", "aria", "qbit"]:
+        await query.answer()
+        await update_buttons(message, data[1])
     elif data[1] == "resetvar":
         await query.answer()
         value = ""
@@ -636,7 +639,6 @@ async def edit_bot_settings(client, query):
         elif value == "":
             value = None
         await query.answer(f"{value}", show_alert=True)
-
     elif data[1] == "edit":
         await query.answer()
         globals()["state"] = "edit"
